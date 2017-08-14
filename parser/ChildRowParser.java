@@ -1,13 +1,9 @@
 package parser;
 
-import exceptionHandler.NullValueRunTimeException;
+import handler.NullValueRunTimeException;
 import model.Conteneur;
 import model.Emplacement;
-import model.Usager;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 

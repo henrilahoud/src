@@ -1,13 +1,11 @@
 package parser;
 
 import javafx.stage.FileChooser;
-import exceptionHandler.*;
-import ui.UiUtils;
+import handler.*;
 
 import java.io.File;
 
-import static exceptionHandler.NullValueRunTimeException.*;
-import static exceptionHandler.exceptionWrapper.errors;
+import static handler.exceptionWrapper.errors;
 import static ui.UiUtils.*;
 
 public class CsvLoader {

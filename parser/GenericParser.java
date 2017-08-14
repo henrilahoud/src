@@ -1,6 +1,6 @@
 package parser;
 
-import exceptionHandler.NullValueRunTimeException;
+import handler.NullValueRunTimeException;
 
 public interface GenericParser<T,S> {
 

@@ -1,7 +1,6 @@
 package parser;
 
-import exceptionHandler.IORunTimeException;
-import exceptionHandler.NullValueRunTimeException;
+import handler.NullValueRunTimeException;
 import model.Emplacement;
 import parser.util.HeaderUtils;
 import parser.util.StringUtils;
@@ -12,7 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 
-import static exceptionHandler.exceptionWrapper.errors;
+import static handler.exceptionWrapper.errors;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public class CsvParser implements GenericParser<DataWrapper,File> {

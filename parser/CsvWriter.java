@@ -2,7 +2,7 @@ package parser;
 
 import javafx.stage.*;
 import model.*;
-import exceptionHandler.*;
+import handler.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,7 +12,7 @@ import java.util.*;
 import static parser.util.HeaderUtils.*;
 import static parser.util.StringUtils.*;
 import static ui.UiUtils.*;
-import static exceptionHandler.exceptionWrapper.*;
+import static handler.exceptionWrapper.*;
 
 public class CsvWriter {
     private DataWrapper wrapper;

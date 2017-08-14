@@ -1,4 +1,4 @@
-package exceptionHandler;
+package handler;
 
 import java.util.HashSet;
 import java.util.Set;
