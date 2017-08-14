@@ -5,7 +5,7 @@ import handler.*;
 
 import java.io.File;
 
-import static handler.exceptionWrapper.errors;
+import static handler.exceptionWrapper.*;
 import static ui.UiUtils.*;
 
 public class CsvLoader {
@@ -43,7 +43,7 @@ public class CsvLoader {
             }
         }
         catch (NullValueRunTimeException e) {
-            errors.add(e);
+            exceptions.add(e);
             warnUser("Exception chopee", "","");
         }
     }

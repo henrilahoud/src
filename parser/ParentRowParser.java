@@ -5,7 +5,7 @@ import model.*;
 
 import java.util.Map;
 
-import static handler.exceptionWrapper.errors;
+import static handler.exceptionWrapper.*;
 import static parser.util.HeaderUtils.*;
 
 public class ParentRowParser implements GenericParser<Emplacement,String[]> {
@@ -127,7 +127,7 @@ public class ParentRowParser implements GenericParser<Emplacement,String[]> {
             return emp;
         }
         catch (Exception e) {
-            errors.add(e);
+            exceptions.add(e);
             throw new NullValueRunTimeException(e);
         }
     }

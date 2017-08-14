@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 
-import static handler.exceptionWrapper.errors;
+import static handler.exceptionWrapper.*;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 public class CsvParser implements GenericParser<DataWrapper,File> {
@@ -24,7 +24,8 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
         try {
             Map<String, Integer> headers = openFile(f);
 
-            if ((errors.size() != 0) || (csvTable.isEmpty())) {
+            //TODO exceptions has to be emptied at each new file
+            if ((exceptions.size() != 0) || (csvTable.isEmpty())) {
                 // Error while openingFile or no entries. Return null
                 return null;
             }
@@ -49,7 +50,7 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
             }
             return new DataWrapper(new ArrayList<>(emplacements));
         } catch (Exception e) {
-            errors.add(e);
+            exceptions.add(e);
             throw new NullValueRunTimeException(e);
         }
     }
@@ -76,7 +77,7 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
             return headers;
         }
         catch (IOException e) {
-            errors.add(e);
+            exceptions.add(e);
             return null;
         }
     }

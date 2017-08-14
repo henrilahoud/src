@@ -30,7 +30,7 @@ public class CsvWriter {
             generateCsv();
         }
         catch (IOException e) {
-            errors.add(e);
+            exceptions.add(e);
         }
     }
 
