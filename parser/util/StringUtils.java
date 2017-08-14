@@ -30,16 +30,20 @@ public abstract class StringUtils {
         return joiner.toString();
     }
 
-    public static String dateToString (LocalDate date) {
-        DateTimeFormatter f = DateTimeFormatter.ofPattern(OUTPUTDATEPATTERN);
-        try {
-            String dateStr = date.format(f);
-            return dateStr;
-        }
-        catch (Exception e) {
+    public static String reformat(LocalDate date) {
+        if (date == null) {
             return DEFAULTVALUE;
         }
+        DateTimeFormatter f = DateTimeFormatter.ofPattern(OUTPUTDATEPATTERN);
+
+        String dateStr = date.format(f);
+        return dateStr;
     }
 
-
+    public static String reformat(String s) {
+        if (s == null) {
+            return DEFAULTVALUE;
+        }
+        return s;
+    }
 }

@@ -24,6 +24,8 @@ public class CsvWriter {
 
     public void write() {
         try {
+            newTable = new HashSet<>();
+
             for (Emplacement e : wrapper.getEmplacements()) {
                 prepareRows(e);
             }
@@ -35,8 +37,6 @@ public class CsvWriter {
     }
 
     private void prepareRows(Emplacement e) {
-        newTable = new HashSet<>();
-
         if (!(e.getConteneurs() == null || (e.getConteneurs().isEmpty()))) {
 
             // For each conteneur, create a row filling the main information of e, and the information of the conteneur, and add it to newTable
@@ -54,8 +54,8 @@ public class CsvWriter {
     private void fillEmplInformation(Emplacement e, String r[]) {
         // TODO First test with partial information
         try {
-            r[USAGER_CODEUSAGER] = e.getUsager().getCodeUsager();
-            r[ENQUETE_PAYSHORSFRANCEFACTURATION] = e.getUsager().getAdresseFacturation().getPays();
+            r[USAGER_CODEUSAGER] = reformat(e.getUsager().getCodeUsager());
+            r[ENQUETE_PAYSHORSFRANCEFACTURATION] = reformat(e.getUsager().getAdresseFacturation().getPays());
         }
         catch (Exception ex) {
             System.out.println("fillEmplInformation");
@@ -65,7 +65,7 @@ public class CsvWriter {
     private void fillContInformation(Conteneur c, String r[]) {
         // TODO First test with partial information
         try {
-            r[ENQUETE_CONTENEUR_DATEDISTRIBUTIONBAC] = dateToString(c.getDateDistribution());
+            r[ENQUETE_CONTENEUR_DATEDISTRIBUTIONBAC] = reformat(c.getDateDistribution());
         }
         catch (Exception ex) {
             System.out.println("fillContInformation");
@@ -76,7 +76,7 @@ public class CsvWriter {
         adviseUser(INFORMATIONTITLE, INFORMATIONHEADER, INFORMATIONCONTENT);
 
         FileChooser saveAs = new FileChooser();
-        // TODO Description
+        // TODO Description + rewrite in UiUtils
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("TEXT","*.csv");
         saveAs.setSelectedExtensionFilter(filter);
         saveAs.setTitle("Emplacement du fichier généré");
