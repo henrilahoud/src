@@ -4,6 +4,7 @@ import handler.NullValueRunTimeException;
 import model.Conteneur;
 import model.Emplacement;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,6 +40,10 @@ public class ChildRowParser implements GenericParser<Emplacement,String[]> {
         c.setNumeroPuce(row[columns.get(COLUMN_ENQUETE_CONTENEUR_NUMPUCE)]);
         c.setNumeroCuve(row[columns.get(COLUMN_ENQUETE_CONTENEUR_NUMCUVE)]);
         c.setNumeroCab(row[columns.get(COLUMN_ENQUETE_CONTENEUR_NUMCAB)]);
+
+        if (e.getConteneurs() == null) {
+            e.setConteneurs(new HashSet<>());
+        }
         e.getConteneurs().add(c);
 
         return e;

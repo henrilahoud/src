@@ -25,7 +25,7 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
             Map<String, Integer> headers = openFile(f);
 
             //TODO exceptions has to be emptied at each new file
-            if ((exceptions.size() != 0) || (csvTable.isEmpty())) {
+            if ((csvTable.isEmpty())) {
                 // Error while openingFile or no entries. Return null
                 return null;
             }
@@ -48,7 +48,7 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
                     childRowParser.parse(r);
                 }
             }
-            return new DataWrapper(new ArrayList<>(emplacements));
+            return new DataWrapper(new ArrayList<>(emplacements), new ArrayList<>(exceptions));
         } catch (Exception e) {
             exceptions.add(e);
             throw new NullValueRunTimeException(e);
