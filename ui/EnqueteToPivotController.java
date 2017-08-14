@@ -8,7 +8,7 @@ import parser.CsvLoader;
 public class EnqueteToPivotController {
 
     @FXML
-    protected void handleLoadButtonAction(ActionEvent Event) {
+    protected void handleLoadButtonAction(ActionEvent event) {
         CsvLoader loader = new CsvLoader();
         loader.load();
     }

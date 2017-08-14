@@ -18,7 +18,7 @@ public abstract class UiUtils {
         Msg.setTitle(title);
         Msg.setHeaderText(header);
         Msg.setContentText(content);
-        Msg.show();
+        Msg.showAndWait();
     }
 
     public static void warnUser(String title, String header, String content) {
@@ -26,6 +26,6 @@ public abstract class UiUtils {
         Msg.setTitle(title);
         Msg.setHeaderText(header);
         Msg.setContentText(content);
-        Msg.show();
+        Msg.showAndWait();
     }
 }
