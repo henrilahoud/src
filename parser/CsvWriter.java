@@ -1,6 +1,6 @@
 package parser;
 
-import javafx.stage.FileChooser;
+import javafx.stage.*;
 import model.*;
 import exceptionHandler.*;
 
@@ -67,13 +67,13 @@ public class CsvWriter {
     public void generateCsv() throws IOException {
         adviseUser(INFORMATIONTITLE, INFORMATIONHEADER, INFORMATIONCONTENT);
 
-        FileChooser SaveAs = new FileChooser();
-        SaveAs.setTitle("Emplacement du fichier généré");
+        FileChooser saveAs = new FileChooser();
+        // TODO Description
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("TEXT","*.csv");
+        saveAs.setSelectedExtensionFilter(filter);
+        saveAs.setTitle("Emplacement du fichier généré");
 
-        // TODO ExtensionFilter
-        // SaveAs.setSelectedExtensionFilter(FileChooser.ExtensionFilter);
-
-        File NewCsv = SaveAs.showSaveDialog(null);
+        File NewCsv = saveAs.showSaveDialog(null);
 
         if (NewCsv != null){
             FileWriter Writer = new FileWriter(new File(NewCsv.toString() + ".csv"));
