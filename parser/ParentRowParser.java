@@ -75,13 +75,14 @@ public class ParentRowParser implements GenericParser<Emplacement,String[]> {
             Reglement r = new Reglement();
             r.setCategorieTiers(row[columns.get(COLUMN_ENQUETE_CATEGORIETIERS)]);
             r.setNatureJuridique(row[columns.get(COLUMN_ENQUETE_NATUREJURIDIQUETIERS)]);
+            u.setReglement(r);
 
             Teomi t = new Teomi();
             t.setNumInvariant(row[columns.get(COLUMN_ENQUETE_NUMINVARIANTFISCAL)]);
             t.setAnneeConstruction(row[columns.get(COLUMN_ENQUETE_ANNEECONSTRUCTION)]);
             t.setCodeRivoli(row[columns.get(COLUMN_ENQUETE_CODERIVOLI)]);
             t.setNumParcelle(row[columns.get(COLUMN_ENQUETE_NUMEROPARCELLE)]);
-            u.setTeomi(t);
+            emp.setTeomi(t);
 
             // Now fill Emplacement
             emp.setActivitePro(row[columns.get(COLUMN_ENQUETE_ACTIVITEPROFESSIONNELLE)]);
@@ -94,6 +95,7 @@ public class ParentRowParser implements GenericParser<Emplacement,String[]> {
             adresse.setNom(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENT5)]);
             adresse.setCp(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENT2)]);
             adresse.setVille(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENT1)]);
+            adresse.setResidencePrincipaleSecondaire(row[columns.get(COLUMN_ENQUETE_RESIDENCEPRINCIPALESECONDAIRE)]);
             adresse.setFacturation(row[columns.get(COLUMN_ENQUETE_FACTURATIONADRESSE)]); // Facturer a l'adresse de l'emplacement ?
             emp.setAdresseEmplacement(adresse);
 

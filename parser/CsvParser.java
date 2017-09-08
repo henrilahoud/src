@@ -13,6 +13,7 @@ import java.util.*;
 
 import static handler.exceptionWrapper.*;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static parser.util.HeaderUtils.resetCodeUsager;
 
 public class CsvParser implements GenericParser<DataWrapper,File> {
 
@@ -36,6 +37,7 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
 
 
             // First fill Usagers to be able to search them and link them to their Conteneur
+            resetCodeUsager();
             for (String[] r : csvTable) {
                 if (parentRowParser.supports(r)) {
                     emplacements.add(parentRowParser.parse(r));

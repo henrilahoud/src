@@ -7,7 +7,16 @@ public class AdresseEmplacement extends Adresse {
     private String nom;
     private String cp;
     private String ville;
+    private String residencePrincipaleSecondaire;
     private String facturation; // Facturer a l'adresse de l'emplacement ?
+
+    public String getResidencePrincipaleSecondaire() {
+        return residencePrincipaleSecondaire;
+    }
+
+    public void setResidencePrincipaleSecondaire(String residencePrincipaleSecondaire) {
+        this.residencePrincipaleSecondaire = residencePrincipaleSecondaire;
+    }
 
     public String getFacturation() {
         return facturation;

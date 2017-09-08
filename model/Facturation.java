@@ -10,6 +10,15 @@ public class Facturation {
     private String cp;
     private String ville;
     private String pays;
+    private String facturerAdresseEmplacement;
+
+    public String getFacturerAdresseEmplacement() {
+        return facturerAdresseEmplacement;
+    }
+
+    public void setFacturerAdresseEmplacement(String facturerAdresseEmplacement) {
+        this.facturerAdresseEmplacement = facturerAdresseEmplacement;
+    }
 
     public String getAdresseEmplacement() {
         return adresseEmplacement;

@@ -1,5 +1,6 @@
 package parser.util;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.StringJoiner;
@@ -8,6 +9,8 @@ import static parser.util.HeaderUtils.*;
 
 public abstract class StringUtils {
     public static final String DEFAULTVALUE = "";
+    public static final String CSVREGEX = "(.+\\.csv)$";
+    public static File savePath;
 
     public static String[] splitRow(String rowStr) {
         String row[] = rowStr.split(";");

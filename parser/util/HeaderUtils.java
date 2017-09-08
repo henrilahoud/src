@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class HeaderUtils {
-    public static int CODEUSAGER = 1;
+    public static int CODEUSAGER = 0;
     public static final String DEFAULTDATE = "";
     public static final String DEFAULTVALUE = "";
     public static final String INPUTDATEPATTERN = "dd.MM.yyyy";
@@ -116,88 +116,83 @@ public abstract class HeaderUtils {
     public static final String COLUMN_ENQUETE_CONTENEUR_NUMCAB = "Enquête de Dotation_CONTENEURISATION:NumCAB";
 
 
-    //public static final Map<String, Integer> DEST_HEADERS = new HashMap<>();
-    //{
-        public static final int USAGER_CODEUSAGER = 0;
-        /*
-        public static final int ENQUETE_ACTIVITEPROFESSIONNELLE = 2;
-        public static final int ENQUETE_RAISONSOCIALE = 9;
-        public static final int ENQUETE_SIRET, 16);
-        public static final int ENQUETE_CIVILITENONPARTICULIER,3);
-        public static final int ENQUETE_NOMNONPARTICULIER,4);
-        public static final int ENQUETE_PRENOMNONPARTICULIER,5);
-        public static final int ENQUETE_CIVILITECONTACT1,3);
-        public static final int ENQUETE_NOMCONTACT1,4);
-        public static final int ENQUETE_PRENOMCONTACT1,5);
-        public static final int ENQUETE_TELEPHONE1,10);
-        public static final int ENQUETE_TELEPHONE2,11);
-        public static final int ENQUETE_CIVILITECONTACT2,6);
-        public static final int ENQUETE_NOMCONTACT2,7);
-        public static final int ENQUETE_PRENOMCONTACT2,8);
-        public static final int ENQUETE_PROPRIETAIRELOCATAIRE,14);
-        public static final int ENQUETE_NOMBREHABITANTS,13);
-        public static final int ENQUETE_NATUREJURIDIQUETIERS,47); //inversés liste Christophe
-        public static final int ENQUETE_CATEGORIETIERS,46); //Pareil
-        public static final int ENQUETE_COMMENTAIRES,15);
-        public static final int ENQUETE_STATUTPOUB,49);
-        public static final int ENQUETE_CIVILITEPOUB,50);
-        public static final int ENQUETE_NOMRAISONSOCIALEPOUB,51);
-        public static final int ENQUETE_PRENOMPOUB,52);
-        public static final int ENQUETE_NUMAPPETAGEPOUB,53);
-        public static final int ENQUETE_ENTREEBATIMENTIMMEUBLEPOUB,54);
-        public static final int ENQUETE_NUMEROLIBELLEVOIEPOUB,55);
-        public static final int ENQUETE_COMPLEMENTADRESSEPOUB,56);
-        public static final int ENQUETE_CPVILLEFRANCEPOUB1,57);
-        public static final int ENQUETE_CPVILLEFRANCEPOUB2,58);
-        public static final int ENQUETE_CPHORSFRANCEPOUB,57);
-        public static final int ENQUETE_VILLEHORSFRANCEPOUB,58);
-        public static final int ENQUETE_PAYSHORSFRANCEPOUB,59);
-        public static final int ENQUETE_TELEPHONE1POUB,60);
-        public static final int ENQUETE_TELEPHONE2POUB,61);
-        public static final int ENQUETE_ADRESSEEMAILPOUB,62);
-        public static final int ENQUETE_DATEEMMENAGEMENT,17);
-        public static final int ENQUETE_ADRESSEEMPLACEMENT1,23);
-        public static final int ENQUETE_ADRESSEEMPLACEMENT2,22);
-        public static final int ENQUETE_ADRESSEEMPLACEMENT3,19);
-        public static final int ENQUETE_ADRESSEEMPLACEMENT4,20);
-        public static final int ENQUETE_ADRESSEEMPLACEMENT5,21);
-        public static final int ENQUETE_NUMVOIEEXTENSION,18);
-        public static final int ENQUETE_RESIDENCEPRINCIPALESECONDAIRE,24);
-        public static final int ENQUETE_FACTURATIONADRESSE,37);
-        public static final int ENQUETE_NOMCOMPLETRAISONSOCIALE,38);
-        public static final int ENQUETE_NUMAPPETAGE,39);
-        public static final int ENQUETE_ENTREEBATIMENTIMMEUBLE,40);
-        public static final int ENQUETE_NUMEROLIBELLEVOIE,41);
-        public static final int ENQUETE_COMPLEMENTADRESSE,42);
-        public static final int ENQUETE_CPVILLEFRANCEFACTURATION1,43);
-        public static final int ENQUETE_CPVILLEFRANCEFACTURATION2,44);
-        public static final int ENQUETE_CPHORSFRANCEFACTURATION,43);
-        public static final int ENQUETE_VILLEHORSFRANCEFACTURATION,44);
-        */
-        public static final int ENQUETE_PAYSHORSFRANCEFACTURATION = 45;
-
-        /*
-        public static final int ENQUETE_TYPECARTE,33);
-        public static final int ENQUETE_NUMCARTE,34);
-        public static final int ENQUETE_DATEATTRIBUTIONCARTE,35);
-        public static final int ENQUETE_MOTIFDISTRIBUTIONCARTE,36);
-        public static final int ENQUETE_NUMINVARIANTFISCAL,63);
-        public static final int ENQUETE_ANNEECONSTRUCTION,64);
-        public static final int ENQUETE_ADRESSEEMAIL,12);
-        public static final int ENQUETE_CODERIVOLI,65);
-        public static final int ENQUETE_NUMEROPARCELLE,66);
-        */
-        public static final int ENQUETE_CONTENEUR_DATEDISTRIBUTIONBAC = 25;
-
-        /*
-        public static final int ENQUETE_CONTENEUR_FLUXMATIERE,26);
-        public static final int ENQUETE_CONTENEUR_VOLUMEBAC,27);
-        public static final int ENQUETE_CONTENEUR_SERRURE,28);
-        public static final int ENQUETE_CONTENEUR_FOURNISSEUR,29);
-        public static final int ENQUETE_CONTENEUR_NUMPUCE,30);
-        public static final int ENQUETE_CONTENEUR_NUMCUVE,31);
-        public static final int ENQUETE_CONTENEUR_NUMCAB,32);
-    //}
+    //Fichier Mapping
+    public static final int USAGER_CODEUSAGER = 0;
+    public static final int USAGER_CODEREPRISE = 1;
+    public static final int ENQUETE_ACTIVITEPROFESSIONNELLE = 2;
+    public static final int ENQUETE_RAISONSOCIALE = 9;
+    public static final int ENQUETE_SIRET = 16;
+    public static final int ENQUETE_CIVILITENONPARTICULIER =3;
+    public static final int ENQUETE_NOMNONPARTICULIER =4;
+    public static final int ENQUETE_PRENOMNONPARTICULIER =5;
+    public static final int ENQUETE_CIVILITECONTACT1 =3;
+    public static final int ENQUETE_NOMCONTACT1 =4;
+    public static final int ENQUETE_PRENOMCONTACT1 =5;
+    public static final int ENQUETE_TELEPHONE1 =10;
+    public static final int ENQUETE_TELEPHONE2 =11;
+    public static final int ENQUETE_CIVILITECONTACT2 =6;
+    public static final int ENQUETE_NOMCONTACT2 =7;
+    public static final int ENQUETE_PRENOMCONTACT2 =8;
+    public static final int ENQUETE_PROPRIETAIRELOCATAIRE =14;
+    public static final int ENQUETE_NOMBREHABITANTS =13;
+    public static final int ENQUETE_NATUREJURIDIQUETIERS =47; //inversés liste Christophe
+    public static final int ENQUETE_CATEGORIETIERS = 46; //Pareil
+    public static final int ENQUETE_COMMENTAIRES = 15;
+    public static final int USAGER_CODEPROPRIETAIRE = 48;
+    public static final int ENQUETE_STATUTPOUB = 49;
+    public static final int ENQUETE_CIVILITEPOUB = 50;
+    public static final int ENQUETE_NOMRAISONSOCIALEPOUB = 51;
+    public static final int ENQUETE_PRENOMPOUB = 52;
+    public static final int ENQUETE_NUMAPPETAGEPOUB = 53;
+    public static final int ENQUETE_ENTREEBATIMENTIMMEUBLEPOUB = 54;
+    public static final int ENQUETE_NUMEROLIBELLEVOIEPOUB = 55;
+    public static final int ENQUETE_COMPLEMENTADRESSEPOUB = 56;
+    public static final int ENQUETE_CPVILLEFRANCEPOUB1 = 57;
+    public static final int ENQUETE_CPVILLEFRANCEPOUB2 = 58;
+    public static final int ENQUETE_PAYSHORSFRANCEPOUB = 59;
+    public static final int ENQUETE_TELEPHONE1POUB = 60;
+    public static final int ENQUETE_TELEPHONE2POUB = 61;
+    public static final int ENQUETE_ADRESSEEMAILPOUB = 62;
+    public static final int ENQUETE_DATEEMMENAGEMENT = 17;
+    public static final int ENQUETE_ADRESSEEMPLACEMENT1 = 23;
+    public static final int ENQUETE_ADRESSEEMPLACEMENT2 = 22;
+    public static final int ENQUETE_ADRESSEEMPLACEMENT3 = 19;
+    public static final int ENQUETE_ADRESSEEMPLACEMENT4 = 20;
+    public static final int ENQUETE_ADRESSEEMPLACEMENT5 = 21;
+    public static final int ENQUETE_NUMVOIEEXTENSION = 18;
+    public static final int ENQUETE_RESIDENCEPRINCIPALESECONDAIRE = 24;
+    public static final int ENQUETE_FACTURATIONADRESSE = 37;
+    public static final int ENQUETE_NOMCOMPLETRAISONSOCIALE = 38;
+    public static final int ENQUETE_NUMAPPETAGE = 39;
+    public static final int ENQUETE_ENTREEBATIMENTIMMEUBLE = 40;
+    public static final int ENQUETE_NUMEROLIBELLEVOIE = 41;
+    public static final int ENQUETE_COMPLEMENTADRESSE = 42;
+    public static final int ENQUETE_CPVILLEFRANCEFACTURATION1 = 43;
+    public static final int ENQUETE_CPVILLEFRANCEFACTURATION2 = 44;
+    public static final int ENQUETE_PAYSHORSFRANCEFACTURATION = 45;
+    public static final int ENQUETE_TYPECARTE = 33;
+    public static final int ENQUETE_NUMCARTE = 34;
+    public static final int ENQUETE_DATEATTRIBUTIONCARTE = 35;
+    public static final int ENQUETE_MOTIFDISTRIBUTIONCARTE = 36;
+    public static final int ENQUETE_NUMINVARIANTFISCAL = 63;
+    public static final int ENQUETE_ANNEECONSTRUCTION = 64;
+    public static final int ENQUETE_ADRESSEEMAIL = 12;
+    public static final int ENQUETE_CODERIVOLI = 65;
+    public static final int ENQUETE_NUMEROPARCELLE = 66;
+    public static final int ENQUETE_CONTENEUR_DATEDISTRIBUTIONBAC = 25;
+    public static final int ENQUETE_CONTENEUR_FLUXMATIERE = 26;
+    public static final int ENQUETE_CONTENEUR_VOLUMEBAC = 27;
+    public static final int ENQUETE_CONTENEUR_SERRURE = 28;
+    public static final int ENQUETE_CONTENEUR_FOURNISSEUR = 29;
+    public static final int ENQUETE_CONTENEUR_NUMPUCE = 30;
+    public static final int ENQUETE_CONTENEUR_NUMCUVE = 31;
+    public static final int ENQUETE_CONTENEUR_NUMCAB = 32;
+    public static final int USAGER_MODEREGLEMENT = 67;
+    public static final int USAGER_DATECREATION = 68;
+    public static final int USAGER_RUM = 69;
+    public static final int USAGER_DATEMANDAT = 70;
+    public static final int USAGER_IBAN = 71;
+    public static final int USAGER_TITULAIRE = 72;
 
     /*
      * Map Headers with their column name and index as value
@@ -219,5 +214,9 @@ public abstract class HeaderUtils {
         }
         // TODO throw
         return null;
+    }
+
+    public static void resetCodeUsager() {
+        CODEUSAGER = 1;
     }
 }

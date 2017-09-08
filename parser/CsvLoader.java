@@ -6,6 +6,7 @@ import handler.*;
 import java.io.File;
 
 import static handler.exceptionWrapper.*;
+import static parser.util.StringUtils.*;
 import static ui.UiUtils.*;
 
 public class CsvLoader {
@@ -14,6 +15,9 @@ public class CsvLoader {
     public CsvLoader() {
         FileChooser OpenFileWindow = new FileChooser();
         CsvFile = OpenFileWindow.showOpenDialog(null);
+
+        //
+        savePath = CsvFile.getParentFile();
     }
 
     private boolean isFileSelected() {
@@ -21,7 +25,7 @@ public class CsvLoader {
     }
 
     private boolean isCsv() {
-        return CsvFile.getPath().toLowerCase().matches("(.+\\.csv)$");
+        return CsvFile.getPath().toLowerCase().matches(CSVREGEX);
     }
 
     public void load() {
@@ -35,7 +39,9 @@ public class CsvLoader {
                         CsvWriter writer = new CsvWriter(wrapper);
                         writer.write();
                     }
-                    warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
+                    else {
+                        warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
+                    }
                 }
                 else {
                     warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT) ;

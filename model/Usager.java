@@ -21,7 +21,6 @@ public class Usager {
     private String nomOuRaisonSocialeFacturation;
     private AdresseGenerique adresseFacturation;
     private Reglement reglement;
-    private Teomi teomi;
 
     public String getCodeUsager() {
         return codeUsager;
@@ -119,14 +118,6 @@ public class Usager {
         this.reglement = reglement;
     }
 
-    public Teomi getTeomi() {
-        return teomi;
-    }
-
-    public void setTeomi(Teomi teomi) {
-        this.teomi = teomi;
-    }
-
     @Override
     public String toString() {
         return "Usager{" +
@@ -142,7 +133,6 @@ public class Usager {
                 ", nomOuRaisonSocialeFacturation='" + nomOuRaisonSocialeFacturation + '\'' +
                 ", adresseFacturation=" + adresseFacturation +
                 ", reglement=" + reglement +
-                ", teomi=" + teomi +
                 '}';
     }
 
@@ -170,8 +160,7 @@ public class Usager {
             return false;
         if (adresseFacturation != null ? !adresseFacturation.equals(usager.adresseFacturation) : usager.adresseFacturation != null)
             return false;
-        if (reglement != null ? !reglement.equals(usager.reglement) : usager.reglement != null) return false;
-        return teomi != null ? teomi.equals(usager.teomi) : usager.teomi == null;
+        return reglement != null ? reglement.equals(usager.reglement) : usager.reglement == null;
     }
 
     @Override
@@ -188,7 +177,6 @@ public class Usager {
         result = 31 * result + (nomOuRaisonSocialeFacturation != null ? nomOuRaisonSocialeFacturation.hashCode() : 0);
         result = 31 * result + (adresseFacturation != null ? adresseFacturation.hashCode() : 0);
         result = 31 * result + (reglement != null ? reglement.hashCode() : 0);
-        result = 31 * result + (teomi != null ? teomi.hashCode() : 0);
         return result;
     }
 }
