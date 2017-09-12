@@ -4,13 +4,16 @@ import javafx.scene.control.Alert;
 
 public abstract class UiUtils {
     public static final String ERRORTITLE = "Erreur";
-    public static final String INFORMATIONTITLE = "Attention";
+    public static final String SAVEFILETITLE = "Sauvegarde du fichier généré";
+    public static final String JOBDONETITLE = "Sauvegarde réussie";
     public static final String WRONGTYPEHEADER = "Le fichier choisi n'est pas valable";
     public static final String WRONGTYPECONTENT = "Seuls les fichiers CSV sont acceptés par cette application.\nVeuillez choisir un fichier CSV.";
     public static final String NODATAHEADER = "Le fichier choisi ne semble pas correspondre";
     public static final String NODATACONTENT = "Les intitulés de colonnes ne sont pas identifiés.\nVeuillez vous assurer du bon format du fichier choisi.";
-    public static final String INFORMATIONHEADER = "Veuillez sauvegarder le fichier généré";
-    public static final String INFORMATIONCONTENT = "";
+    public static final String SAVEFILEHEADER = "Veuillez choisir l'emplacement du fichier généré";
+    public static final String SAVEFILECONTENT = "";
+    public static final String JOBDONEHEADER = "Le fichier a été sauvegardé avec succès";
+    public static final String JOBDONECONTENT = "";
 
 
     public static void adviseUser(String title, String header, String content) {

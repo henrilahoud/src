@@ -24,7 +24,7 @@
     <VBox alignment="BOTTOM_CENTER" prefHeight="20" GridPane.rowIndex="2">
         <Text mouseTransparent="true" text="Veolia Recyclage et Valorisation des Déchets"/>
         <Text mouseTransparent="true" text="Domaine RIVP"/>
-        <Text mouseTransparent="true" text="Version 1.0"/>
+        <Text mouseTransparent="true" text="Version 2.1"/>
     </VBox>
 
 

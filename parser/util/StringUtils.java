@@ -13,7 +13,7 @@ public abstract class StringUtils {
     public static File savePath;
 
     public static String[] splitRow(String rowStr) {
-        String row[] = rowStr.split(";");
+        String row[] = rowStr.split(";",-1);
 
         for (int i=0 ; i<row.length ; i++) {
             String s = row[i].replace("\"","");

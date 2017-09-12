@@ -43,16 +43,18 @@ public class CsvWriter {
     private void prepareRows(Emplacement e) {
         String row[] = new String[PIVOTCOLUMNS_NB];
         fillEmplInformation(e, row);
-        fillContInformation(new Conteneur(),row);
+        fillContInformation(new Conteneur(), row);
 
         if (!(e.getConteneurs() == null || (e.getConteneurs().isEmpty()))) {
 
             // For each conteneur, create a row filling the main information of e, and the information of the conteneur, and add it to newTable
             for (Conteneur c : e.getConteneurs()) {
                 fillContInformation(c, row);
+                newTable.add(joinRow(row));
             }
-        }
+        } else {
             newTable.add(joinRow(row));
+        }
     }
 
     private void fillEmplInformation(Emplacement e, String r[]) {
@@ -159,18 +161,18 @@ public class CsvWriter {
     }
 
     public void generateCsv() throws IOException {
-        adviseUser(INFORMATIONTITLE, INFORMATIONHEADER, INFORMATIONCONTENT);
+        adviseUser(SAVEFILETITLE, SAVEFILEHEADER, SAVEFILECONTENT);
 
         FileChooser saveAs = new FileChooser();
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Fichiers CSV","*.csv");
-        saveAs.setSelectedExtensionFilter(filter);
+        saveAs.getExtensionFilters().add(filter);
         saveAs.setInitialDirectory(savePath);
         saveAs.setTitle("Emplacement du fichier généré");
 
         File NewCsv = saveAs.showSaveDialog(null);
 
         if (NewCsv != null){
-            FileWriter Writer = new FileWriter(new File(NewCsv.toString() + ".csv"));
+            FileWriter Writer = new FileWriter(new File(NewCsv.toString()));
 
             // Append titles
             Writer.append(MAINTITLES);
@@ -181,6 +183,8 @@ public class CsvWriter {
             }
             Writer.flush();
             Writer.close();
+
+            adviseUser(JOBDONETITLE, JOBDONEHEADER, JOBDONECONTENT);
         }
     }
 }
