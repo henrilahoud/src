@@ -13,9 +13,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("EnqueteToPivot.fxml"));
 
-        Image Icon = new Image(getClass().getResourceAsStream("../Images/Veolia.png"));
+        Image Icon = new Image(getClass().getResourceAsStream("/Images/Veolia.png"));
 
-        primaryStage.getIcons().add(Icon);
+        if (Icon != null) {
+            primaryStage.getIcons().add(Icon);
+        }
+
         primaryStage.setTitle("Générateur de fichier pivot");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 300, 275));
