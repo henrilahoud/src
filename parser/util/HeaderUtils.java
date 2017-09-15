@@ -12,7 +12,7 @@ public abstract class HeaderUtils {
     public static final int PIVOTCOLUMNS_NB = 73;
 
     // First 2 rows of output
-    public static final String MAINTITLES = "Renseignements de l'usager occupant;;;;;;;;;;;;;;;;;Renseignements de l'emplacement;;;;;;;;Conteneur;;;;;;;;Cartes;;;;Adresse de facturation;;;;;;;;;;;Renseignements du Propriétaire ou Bailleur;;;;;;;;;;;;;;;Informations TEOMi;;;Informations SEPA;;;;;\n";
+    public static final String MAINTITLES = "Renseignements de l'usager occupant;;;;;;;;;;;;;;;;;Renseignements de l'emplacement;;;;;;;;Conteneur;;;;;;;;Cartes;;;;Adresse de facturation;;;;;;;;;;;Renseignements du Propriétaire ou Bailleur;;;;;;;;;;;;;;;Informations TEOMi;;;;Informations SEPA;;;;;\n";
     public static final String SUBTITLES = "Code usager;Code reprise;Activité professionnelle;Civilité Contact 1;Nom Contact 1;Prénom Contact 1;Civilité Contact 2;Nom Contact 2;Prénom Contact 2;Raison sociale;Téléphone 1;Téléphone 2;Adresse email;Nombre Habitants;Propriétaire / Locataire;Commentaires;N° SIRET;Date d'emménagement;N° de voie + Extension;Type de Voie;Article de la voie;Nom de la voie;CP Ville;Ville;Résidence Principale ou Secondaire;Date de distribution du bac;Flux / Matière;Volume bac (L);Serrure;Fournisseur;N° de puce;N° de cuve;N° de CAB;Type;N° carte;Date d'attribution de la carte;Motif de distribution;Facturer à l'adresse de l'emplacement;Nom complet / Raison sociale;N° App / Etage;Entrée / Bâtiment / Immeuble;Numéro + Libellé de la voie;Complément adresse;CP Ville;Ville;Pays;Catégorie du tiers;Nature juridique du tiers;Code propriétaire;Statut propriétaire ou bailleur ?;Civilité;Nom ou Raison sociale;Prénom;N° App / Etage;Entrée / Bâtiment / Immeuble;Numéro + Libellé de la voie;Complément adresse;CP Ville;Ville;Pays;Téléphone;Téléphone 2;Adresse email;Numéro invariant fiscal;Année de construction du logement;Code Rivoli;Numéro de parcelle;Mode de règlement;Date de création;RUM;Date de mandat;IBAN;Titulaire du compte\n";
 
 
@@ -75,11 +75,11 @@ public abstract class HeaderUtils {
     public static final String COLUMN_ENQUETE_ADRESSEEMAILPOUB = "Enquête de Dotation:AdresseEmailPouB";
     public static final String COLUMN_ENQUETE_DATEEMMENAGEMENT = "Enquête de Dotation:DateEmmenagement";
     public static final String COLUMN_ENQUETE_NUMVOIEEXTENSION = "Enquête de Dotation:NumVoieExtension";
-    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENT1 = "Enquête de Dotation:AdresseEmplacement, Lvl 1";
-    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENT2 = "Enquête de Dotation:AdresseEmplacement, Lvl 2";
-    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENT3 = "Enquête de Dotation:AdresseEmplacement, Lvl 3";
-    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENT4 = "Enquête de Dotation:AdresseEmplacement, Lvl 4";
-    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENT5 = "Enquête de Dotation:AdresseEmplacement, Lvl 5";
+    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTVILLE = "Enquête de Dotation:AdresseEmplacement, VILLE";
+    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTCP = "Enquête de Dotation:AdresseEmplacement, CP";
+    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTTYPE = "Enquête de Dotation:AdresseEmplacement, TYPE DE VOIE";
+    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTARTICLE = "Enquête de Dotation:AdresseEmplacement, ARTICLE DE LA VOIE";
+    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTNOM = "Enquête de Dotation:AdresseEmplacement, NOM DE LA VOIE";
     public static final String COLUMN_ENQUETE_RESIDENCEPRINCIPALESECONDAIRE = "Enquête de Dotation:ResidencePrincipaleSecondaire, Résidence principale ou secondaire";
     public static final String COLUMN_ENQUETE_FACTURATIONADRESSE = "Enquête de Dotation:FacturationAdresse";
     public static final String COLUMN_ENQUETE_NOMCOMPLETRAISONSOCIALE = "Enquête de Dotation:NomCompletRaisonSociale";

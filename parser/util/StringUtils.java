@@ -23,6 +23,10 @@ public abstract class StringUtils {
         return row;
     }
 
+    //public static String[] splitRow(String rowStr, int colNb) {
+
+    //}
+
     public static String joinRow(String[] row) {
         StringJoiner joiner = new StringJoiner(";","","\n");
 

@@ -90,11 +90,11 @@ public class ParentRowParser implements GenericParser<Emplacement,String[]> {
 
             AdresseEmplacement adresse = new AdresseEmplacement();
             adresse.setNumero(row[columns.get(COLUMN_ENQUETE_NUMVOIEEXTENSION)]);
-            adresse.setType(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENT3)]);
-            adresse.setArticle(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENT4)]);
-            adresse.setNom(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENT5)]);
-            adresse.setCp(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENT2)]);
-            adresse.setVille(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENT1)]);
+            adresse.setType(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENTTYPE)]);
+            adresse.setArticle(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENTARTICLE)]);
+            adresse.setNom(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENTNOM)]);
+            adresse.setCp(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENTCP)]);
+            adresse.setVille(row[columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENTVILLE)]);
             adresse.setResidencePrincipaleSecondaire(row[columns.get(COLUMN_ENQUETE_RESIDENCEPRINCIPALESECONDAIRE)]);
             adresse.setFacturation(row[columns.get(COLUMN_ENQUETE_FACTURATIONADRESSE)]); // Facturer a l'adresse de l'emplacement ?
             emp.setAdresseEmplacement(adresse);

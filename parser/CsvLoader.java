@@ -50,7 +50,7 @@ public class CsvLoader {
         }
         catch (NullValueRunTimeException e) {
             exceptions.add(e);
-            warnUser("Exception chopee", "","");
+            warnUser("Erreur fatale", "Veuillez transmettre cette erreur à l'équipe RIVP :",e.getMessage());
         }
     }
 }
