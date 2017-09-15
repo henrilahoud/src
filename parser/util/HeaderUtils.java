@@ -154,12 +154,12 @@ public abstract class HeaderUtils {
     public static final int ENQUETE_TELEPHONE2POUB = 61;
     public static final int ENQUETE_ADRESSEEMAILPOUB = 62;
     public static final int ENQUETE_DATEEMMENAGEMENT = 17;
-    public static final int ENQUETE_ADRESSEEMPLACEMENT1 = 23;
-    public static final int ENQUETE_ADRESSEEMPLACEMENT2 = 22;
-    public static final int ENQUETE_ADRESSEEMPLACEMENT3 = 19;
-    public static final int ENQUETE_ADRESSEEMPLACEMENT4 = 20;
-    public static final int ENQUETE_ADRESSEEMPLACEMENT5 = 21;
     public static final int ENQUETE_NUMVOIEEXTENSION = 18;
+    public static final int ENQUETE_ADRESSEEMPLACEMENTTYPE = 19;
+    public static final int ENQUETE_ADRESSEEMPLACEMENTARTICLE = 20;
+    public static final int ENQUETE_ADRESSEEMPLACEMENTNOM = 21;
+    public static final int ENQUETE_ADRESSEEMPLACEMENTCP = 21;
+    public static final int ENQUETE_ADRESSEEMPLACEMENTVILLE = 22;
     public static final int ENQUETE_RESIDENCEPRINCIPALESECONDAIRE = 24;
     public static final int ENQUETE_FACTURATIONADRESSE = 37;
     public static final int ENQUETE_NOMCOMPLETRAISONSOCIALE = 38;

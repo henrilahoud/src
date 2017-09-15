@@ -3,7 +3,7 @@ package model;
 public class Usager {
 
 
-    private String codeUsager;
+    private int codeUsager;
     private Contact contact1;
     private Contact contact2;
     private String nombreHabitants;
@@ -22,11 +22,11 @@ public class Usager {
     private AdresseGenerique adresseFacturation;
     private Reglement reglement;
 
-    public String getCodeUsager() {
+    public int getCodeUsager() {
         return codeUsager;
     }
 
-    public void setCodeUsager(String codeUsager) {
+    public void setCodeUsager(int codeUsager) {
         this.codeUsager = codeUsager;
     }
 
@@ -121,7 +121,7 @@ public class Usager {
     @Override
     public String toString() {
         return "Usager{" +
-                "codeUsager='" + codeUsager + '\'' +
+                "codeUsager=" + codeUsager +
                 ", contact1=" + contact1 +
                 ", contact2=" + contact2 +
                 ", nombreHabitants='" + nombreHabitants + '\'' +
@@ -143,7 +143,7 @@ public class Usager {
 
         Usager usager = (Usager) o;
 
-        if (codeUsager != null ? !codeUsager.equals(usager.codeUsager) : usager.codeUsager != null) return false;
+        if (codeUsager != usager.codeUsager) return false;
         if (contact1 != null ? !contact1.equals(usager.contact1) : usager.contact1 != null) return false;
         if (contact2 != null ? !contact2.equals(usager.contact2) : usager.contact2 != null) return false;
         if (nombreHabitants != null ? !nombreHabitants.equals(usager.nombreHabitants) : usager.nombreHabitants != null)
@@ -165,7 +165,7 @@ public class Usager {
 
     @Override
     public int hashCode() {
-        int result = codeUsager != null ? codeUsager.hashCode() : 0;
+        int result = codeUsager;
         result = 31 * result + (contact1 != null ? contact1.hashCode() : 0);
         result = 31 * result + (contact2 != null ? contact2.hashCode() : 0);
         result = 31 * result + (nombreHabitants != null ? nombreHabitants.hashCode() : 0);
@@ -180,3 +180,4 @@ public class Usager {
         return result;
     }
 }
+

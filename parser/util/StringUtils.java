@@ -53,4 +53,8 @@ public abstract class StringUtils {
         }
         return s;
     }
+
+    public static String reformat(int s) {
+        return Integer.toString(s);
+    }
 }

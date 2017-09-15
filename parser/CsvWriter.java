@@ -28,7 +28,7 @@ public class CsvWriter {
         try {
             newTable = new ArrayList<>();
 
-            Collections.sort(wrapper.getEmplacements(), (Emplacement e1, Emplacement e2) -> e1.getUsager().getCodeUsager().compareTo(e2.getUsager().getCodeUsager()));
+            Collections.sort(wrapper.getEmplacements(), (Emplacement e1, Emplacement e2) -> e1.getUsager().getCodeUsager() - e2.getUsager().getCodeUsager());
 
             for (Emplacement e : wrapper.getEmplacements()) {
                 prepareRows(e);
@@ -81,11 +81,11 @@ public class CsvWriter {
             //Informations Emplacement
             r[ENQUETE_DATEEMMENAGEMENT] = reformat(e.getDateEmmenagement());
             r[ENQUETE_NUMVOIEEXTENSION] = reformat(e.getAdresseEmplacement().getNumero());
-            r[ENQUETE_ADRESSEEMPLACEMENT1] = reformat(e.getAdresseEmplacement().getType());
-            r[ENQUETE_ADRESSEEMPLACEMENT2] = reformat(e.getAdresseEmplacement().getArticle());
-            r[ENQUETE_ADRESSEEMPLACEMENT3] = reformat(e.getAdresseEmplacement().getNom());
-            r[ENQUETE_ADRESSEEMPLACEMENT4] = reformat(e.getAdresseEmplacement().getCp());
-            r[ENQUETE_ADRESSEEMPLACEMENT5] = reformat(e.getAdresseEmplacement().getVille());
+            r[ENQUETE_ADRESSEEMPLACEMENTTYPE] = reformat(e.getAdresseEmplacement().getType());
+            r[ENQUETE_ADRESSEEMPLACEMENTARTICLE] = reformat(e.getAdresseEmplacement().getArticle());
+            r[ENQUETE_ADRESSEEMPLACEMENTNOM] = reformat(e.getAdresseEmplacement().getNom());
+            r[ENQUETE_ADRESSEEMPLACEMENTCP] = reformat(e.getAdresseEmplacement().getCp());
+            r[ENQUETE_ADRESSEEMPLACEMENTVILLE] = reformat(e.getAdresseEmplacement().getVille());
             r[ENQUETE_RESIDENCEPRINCIPALESECONDAIRE] = reformat(e.getAdresseEmplacement().getResidencePrincipaleSecondaire());
 
             //Informations Cartes
