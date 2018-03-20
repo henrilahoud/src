@@ -1,5 +1,7 @@
 package model;
 
+import java.text.Normalizer;
+
 public class Contact {
     private String civilite;
     private String nomOuRaisonSociale;
@@ -20,6 +22,10 @@ public class Contact {
         return nomOuRaisonSociale;
     }
 
+    public String getNomOuRaisonSocialeFormatted() {
+        return format(nomOuRaisonSociale);
+    }
+
     public void setNomOuRaisonSociale(String nom) {
         this.nomOuRaisonSociale = nom;
     }
@@ -28,12 +34,16 @@ public class Contact {
         return prenom;
     }
 
+    public String getPrenomFormatted() {
+        return format(prenom);
+    }
+
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
 
     public String getTelephone1() {
-        return telephone1;
+        return toTel(telephone1);
     }
 
     public void setTelephone1(String telephone1) {
@@ -41,7 +51,7 @@ public class Contact {
     }
 
     public String getTelephone2() {
-        return telephone2;
+        return toTel(telephone2);
     }
 
     public void setTelephone2(String telephone2) {
@@ -54,6 +64,24 @@ public class Contact {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    private String toTel(String telNumber) {
+        if (telNumber.length() == 1) {
+            return "";
+        }
+        return ("0" + telNumber).replaceFirst("(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})","$1 $2 $3 $4 $5");
+    }
+
+    private String format(String toFormat) {
+        String normalized = Normalizer.normalize(toFormat, Normalizer.Form.NFD);
+
+        return normalized
+                .toUpperCase()
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "") //Replaces accentuated chars by their generic letter
+                .replaceAll("[^\\w]"," ")
+                .replaceAll("[\\s]+"," ")
+                .trim();
     }
 
     @Override

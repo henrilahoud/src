@@ -1,5 +1,9 @@
 package model;
 
+import com.sun.tools.javac.util.StringUtils;
+
+import java.text.Normalizer;
+
 public class Usager {
 
 
@@ -71,7 +75,7 @@ public class Usager {
     }
 
     public String getRaisonSociale() {
-        return raisonSociale;
+        return format(raisonSociale);
     }
 
     public void setRaisonSociale(String raisonSociale) {
@@ -116,6 +120,13 @@ public class Usager {
 
     public void setReglement(Reglement reglement) {
         this.reglement = reglement;
+    }
+
+    private String format(String toFormat) {
+        return toFormat.toUpperCase()
+                .replaceAll("[^\\w]"," ")
+                .replaceAll("[\\s]+"," ")
+                .trim();
     }
 
     @Override

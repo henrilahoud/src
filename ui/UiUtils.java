@@ -1,6 +1,7 @@
 package ui;
 
 import javafx.scene.control.Alert;
+import parser.util.Statistics;
 
 public abstract class UiUtils {
     public static final String ERRORTITLE = "Erreur";
@@ -13,7 +14,7 @@ public abstract class UiUtils {
     public static final String SAVEFILEHEADER = "Veuillez choisir l'emplacement du fichier généré";
     public static final String SAVEFILECONTENT = "";
     public static final String JOBDONEHEADER = "Le fichier a été sauvegardé avec succès";
-    public static final String JOBDONECONTENT = "";
+    public static final String JOBDONECONTENT = "Nombre d'Emplacements : " + Integer.toString(Statistics.nbEmplacements) + "\nNombre de Conteneurs : " + Integer.toString(Statistics.nbConteneurs);
 
 
     public static void adviseUser(String title, String header, String content) {

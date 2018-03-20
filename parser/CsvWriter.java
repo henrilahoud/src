@@ -10,7 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import static com.sun.xml.internal.xsom.impl.UName.comparator;
 import static parser.util.HeaderUtils.*;
 import static parser.util.StringUtils.*;
 import static ui.UiUtils.*;
@@ -64,11 +63,11 @@ public class CsvWriter {
             r[USAGER_CODEREPRISE] = StringUtils.DEFAULTVALUE;
             r[ENQUETE_ACTIVITEPROFESSIONNELLE] = reformat(e.getActivitePro());
             r[ENQUETE_CIVILITECONTACT1] = reformat(e.getUsager().getContact1().getCivilite());
-            r[ENQUETE_NOMCONTACT1] = reformat(e.getUsager().getContact1().getNomOuRaisonSociale());
-            r[ENQUETE_PRENOMCONTACT1] = reformat(e.getUsager().getContact1().getPrenom());
+            r[ENQUETE_NOMCONTACT1] = reformat(e.getUsager().getContact1().getNomOuRaisonSocialeFormatted());
+            r[ENQUETE_PRENOMCONTACT1] = reformat(e.getUsager().getContact1().getPrenomFormatted());
             r[ENQUETE_CIVILITECONTACT2] = reformat(e.getUsager().getContact2().getCivilite());
-            r[ENQUETE_NOMCONTACT2] = reformat(e.getUsager().getContact2().getNomOuRaisonSociale());
-            r[ENQUETE_PRENOMCONTACT2] = reformat(e.getUsager().getContact2().getPrenom());
+            r[ENQUETE_NOMCONTACT2] = reformat(e.getUsager().getContact2().getNomOuRaisonSocialeFormatted());
+            r[ENQUETE_PRENOMCONTACT2] = reformat(e.getUsager().getContact2().getPrenomFormatted());
             r[ENQUETE_RAISONSOCIALE] = reformat(e.getUsager().getRaisonSociale());
             r[ENQUETE_TELEPHONE1] = reformat(e.getUsager().getContact1().getTelephone1());
             r[ENQUETE_TELEPHONE2] = reformat(e.getUsager().getContact1().getTelephone2());

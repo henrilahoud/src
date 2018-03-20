@@ -1,5 +1,7 @@
 package model;
 
+import parser.util.Statistics;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -80,6 +82,10 @@ public class Emplacement {
 
     public void setTeomi(Teomi teomi) {
         this.teomi = teomi;
+    }
+
+    public Emplacement() {
+        Statistics.nbEmplacements ++;
     }
 
     @Override

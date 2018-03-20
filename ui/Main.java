@@ -7,11 +7,13 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.text.Normalizer;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("EnqueteToPivot.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/ui/MainWindow.fxml"));
 
         Image Icon = new Image(getClass().getResourceAsStream("/Images/Veolia.png"));
 

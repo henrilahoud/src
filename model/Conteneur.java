@@ -1,5 +1,7 @@
 package model;
 
+import parser.util.Statistics;
+
 import java.time.LocalDate;
 
 public class Conteneur {
@@ -74,6 +76,10 @@ public class Conteneur {
 
     public void setNumeroCab(String numeroCab) {
         this.numeroCab = numeroCab;
+    }
+
+    public Conteneur() {
+        Statistics.nbConteneurs ++;
     }
 
     @Override
