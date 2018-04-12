@@ -16,20 +16,20 @@ import static ui.UiUtils.*;
 import static handler.exceptionWrapper.*;
 
 public class CsvWriter {
-    private DataWrapper wrapper;
+    private ArrayList<Emplacement> emplacements;
     private List<String> newTable;
 
-    public CsvWriter(DataWrapper wrapper) throws NullValueRunTimeException {
-        this.wrapper = wrapper;
+    public CsvWriter(ArrayList<Emplacement> emplacements) throws NullValueRunTimeException {
+        this.emplacements = emplacements;
     }
 
     public void write() {
         try {
             newTable = new ArrayList<>();
 
-            Collections.sort(wrapper.getEmplacements(), (Emplacement e1, Emplacement e2) -> e1.getUsager().getCodeUsager() - e2.getUsager().getCodeUsager());
+            Collections.sort(emplacements, (Emplacement e1, Emplacement e2) -> e1.getUsager().getCodeUsager() - e2.getUsager().getCodeUsager());
 
-            for (Emplacement e : wrapper.getEmplacements()) {
+            for (Emplacement e : emplacements) {
                 prepareRows(e);
             }
             generateCsv();
@@ -40,15 +40,15 @@ public class CsvWriter {
     }
 
     private void prepareRows(Emplacement e) {
-        String row[] = new String[PIVOTCOLUMNS_NB];
+        String row[] = new String[PIVOTCOLUMNS_NB+1]; // +1 is only for Pays de Valois
         fillEmplInformation(e, row);
-        fillContInformation(new Conteneur(), row);
+        fillContInformation(new Conteneur(false), row, true);
 
         if (!(e.getConteneurs() == null || (e.getConteneurs().isEmpty()))) {
 
             // For each conteneur, create a row filling the main information of e, and the information of the conteneur, and add it to newTable
             for (Conteneur c : e.getConteneurs()) {
-                fillContInformation(c, row);
+                fillContInformation(c, row, e.isValid()); //isValid was created for Pays de Valois
                 newTable.add(joinRow(row));
             }
         } else {
@@ -143,7 +143,7 @@ public class CsvWriter {
         }
     }
 
-    private void fillContInformation(Conteneur c, String r[]) {
+    private void fillContInformation(Conteneur c, String r[], boolean isValid) {
         try {
             r[ENQUETE_CONTENEUR_DATEDISTRIBUTIONBAC] = reformat(c.getDateDistribution());
             r[ENQUETE_CONTENEUR_FLUXMATIERE] = reformat(c.getFluxOuMatiere());
@@ -153,6 +153,12 @@ public class CsvWriter {
             r[ENQUETE_CONTENEUR_NUMPUCE] = reformat(c.getNumeroPuce());
             r[ENQUETE_CONTENEUR_NUMCUVE] = reformat(c.getNumeroCuve());
             r[ENQUETE_CONTENEUR_NUMCAB] = reformat(c.getNumeroCab());
+
+            //Only for Pays de Valois
+            r[PIVOTCOLUMNS_NB]= reformatLastColumn(true);
+            if (!isValid) {
+                r[PIVOTCOLUMNS_NB]= reformatLastColumn(c.isFilled());
+            }
         }
         catch (Exception ex) {
             System.out.println("fillContInformation");
@@ -183,6 +189,7 @@ public class CsvWriter {
             Writer.flush();
             Writer.close();
 
+            //TODO compte est faux
             adviseUser(JOBDONETITLE, JOBDONEHEADER, JOBDONECONTENT);
         }
     }

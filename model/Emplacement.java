@@ -1,5 +1,6 @@
 package model;
 
+import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import parser.util.Statistics;
 
 import java.time.LocalDate;
@@ -86,6 +87,18 @@ public class Emplacement {
 
     public Emplacement() {
         Statistics.nbEmplacements ++;
+    }
+
+    public boolean isValid() {
+        if (conteneurs.size() > 0) {
+            Conteneur[] mySet = conteneurs.toArray(new Conteneur[conteneurs.size()]);
+            for (int i = 0 ; i < mySet.length-1 ; i++) {
+                if (mySet[i].isFilled() ^ mySet[i+1].isFilled()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override

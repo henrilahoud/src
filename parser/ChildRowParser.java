@@ -31,7 +31,7 @@ public class ChildRowParser implements GenericParser<Emplacement,String[]> {
         String parentId = row[columns.get(COLUMN_PARENTID)];
         Emplacement e = findEmplacement(parentId);
 
-        Conteneur c = new Conteneur();
+        Conteneur c = new Conteneur(true);
         c.setDateDistribution(new DateParser().parse(row[columns.get(COLUMN_ENQUETE_CONTENEUR_DATEDISTRIBUTIONBAC)]));
         c.setFluxOuMatiere(row[columns.get(COLUMN_ENQUETE_CONTENEUR_FLUXMATIERE)]);
         c.setVolumeBac(row[columns.get(COLUMN_ENQUETE_CONTENEUR_VOLUMEBAC)]);

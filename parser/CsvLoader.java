@@ -2,6 +2,7 @@ package parser;
 
 import javafx.stage.FileChooser;
 import handler.*;
+import ui.LoadTask;
 
 import java.io.File;
 
@@ -10,22 +11,19 @@ import static parser.util.StringUtils.*;
 import static ui.UiUtils.*;
 
 public class CsvLoader {
-    private File CsvFile;
+    private File csvFile;
 
-    public CsvLoader() {
-        FileChooser OpenFileWindow = new FileChooser();
-        CsvFile = OpenFileWindow.showOpenDialog(null);
-
-        //
-        savePath = CsvFile.getParentFile();
+    public CsvLoader(File f) {
+        csvFile = f;
+        savePath = f.getParentFile();
     }
 
     private boolean isFileSelected() {
-        return !(CsvFile == null);
+        return !(csvFile == null);
     }
 
     private boolean isCsv() {
-        return CsvFile.getPath().toLowerCase().matches(CSVREGEX);
+        return csvFile.getPath().toLowerCase().matches(CSVREGEX);
     }
 
     public void load() {
@@ -33,11 +31,13 @@ public class CsvLoader {
             if (isFileSelected()) {
                 if (isCsv()) {
                     CsvParser parser = new CsvParser();
-                    DataWrapper wrapper = parser.parse(CsvFile);
+                    DataWrapper wrapper = parser.parse(csvFile);
+
+
 
                     if (wrapper != null) {
-                        CsvWriter writer = new CsvWriter(wrapper);
-                        writer.write();
+                       // CsvWriter writer = new CsvWriter(wrapper);
+                       // writer.write();
                     }
                     else {
                         warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);

@@ -48,7 +48,7 @@ public abstract class StringUtils {
     }
 
     public static String reformat(String s) {
-        if (s == null) {
+        if (s == null || s.equalsIgnoreCase("vide")) {
             return DEFAULTVALUE;
         }
         return s;
@@ -56,5 +56,12 @@ public abstract class StringUtils {
 
     public static String reformat(int s) {
         return Integer.toString(s);
+    }
+
+    public static String reformatLastColumn(boolean b) {
+        if (!b) {
+            return "A SUPPRIMER";
+        }
+        else return DEFAULTVALUE;
     }
 }

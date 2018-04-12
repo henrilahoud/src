@@ -1,10 +1,11 @@
 package model;
 
-import parser.util.Statistics;
-
 import java.time.LocalDate;
+import static parser.util.Statistics.nbConteneurs;
 
 public class Conteneur {
+    private int conteneurInternalId;
+    private boolean filled = false;
     private LocalDate dateDistribution;
     private String fluxOuMatiere;
     private String volumeBac;
@@ -13,6 +14,22 @@ public class Conteneur {
     private String numeroPuce;
     private String numeroCuve;
     private String numeroCab;
+
+    public int getConteneurInternalId() {
+        return conteneurInternalId;
+    }
+
+    public void setConteneurInternalId(int conteneurInternalId) {
+        this.conteneurInternalId = conteneurInternalId;
+    }
+
+    public boolean isFilled() {
+        return filled;
+    }
+
+    public void setFilled(boolean filled) {
+        this.filled = filled;
+    }
 
     public LocalDate getDateDistribution() {
         return dateDistribution;
@@ -28,6 +45,7 @@ public class Conteneur {
 
     public void setFluxOuMatiere(String fluxOuMatiere) {
         this.fluxOuMatiere = fluxOuMatiere;
+        if (fluxOuMatiere.equalsIgnoreCase("SAC")) this.filled = true; //Only for Pays de Valois
     }
 
     public String getVolumeBac() {
@@ -60,6 +78,7 @@ public class Conteneur {
 
     public void setNumeroPuce(String numeroPuce) {
         this.numeroPuce = numeroPuce;
+        if (numeroPuce.length() > 0) this.filled = true;
     }
 
     public String getNumeroCuve() {
@@ -68,6 +87,7 @@ public class Conteneur {
 
     public void setNumeroCuve(String numeroCuve) {
         this.numeroCuve = numeroCuve;
+        if (numeroCuve.length() > 0) this.filled = true; //Only for Pays de Valois
     }
 
     public String getNumeroCab() {
@@ -76,16 +96,21 @@ public class Conteneur {
 
     public void setNumeroCab(String numeroCab) {
         this.numeroCab = numeroCab;
+        if (numeroCab.length() > 0) this.filled = true; //Only for Pays de Valois
     }
 
-    public Conteneur() {
-        Statistics.nbConteneurs ++;
+    public Conteneur(boolean isCounted) {
+        if (isCounted) {
+            nbConteneurs ++;
+            this.conteneurInternalId = nbConteneurs; //Only for Pays de Valois
+        }
     }
 
     @Override
     public String toString() {
         return "Conteneur{" +
-                "dateDistribution=" + dateDistribution +
+                "conteneurInternalId=" + conteneurInternalId +
+                ", dateDistribution=" + dateDistribution +
                 ", fluxOuMatiere='" + fluxOuMatiere + '\'' +
                 ", volumeBac='" + volumeBac + '\'' +
                 ", serrure='" + serrure + '\'' +
@@ -103,6 +128,7 @@ public class Conteneur {
 
         Conteneur conteneur = (Conteneur) o;
 
+        if (conteneurInternalId != conteneur.conteneurInternalId) return false;
         if (dateDistribution != null ? !dateDistribution.equals(conteneur.dateDistribution) : conteneur.dateDistribution != null)
             return false;
         if (fluxOuMatiere != null ? !fluxOuMatiere.equals(conteneur.fluxOuMatiere) : conteneur.fluxOuMatiere != null)
@@ -118,7 +144,8 @@ public class Conteneur {
 
     @Override
     public int hashCode() {
-        int result = dateDistribution != null ? dateDistribution.hashCode() : 0;
+        int result = conteneurInternalId;
+        result = 31 * result + (dateDistribution != null ? dateDistribution.hashCode() : 0);
         result = 31 * result + (fluxOuMatiere != null ? fluxOuMatiere.hashCode() : 0);
         result = 31 * result + (volumeBac != null ? volumeBac.hashCode() : 0);
         result = 31 * result + (serrure != null ? serrure.hashCode() : 0);

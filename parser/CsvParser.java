@@ -1,6 +1,12 @@
 package parser;
 
 import handler.NullValueRunTimeException;
+import javafx.concurrent.Task;
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.VBox;
 import model.Emplacement;
 import parser.util.HeaderUtils;
 import parser.util.StringUtils;
@@ -19,42 +25,76 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
 
     private BufferedReader csvReader;
     private ArrayList<String[]> csvTable;
-    public static Integer counter = 1;
+    private int totalNbOfLines;
+
+    public int getTotalNbOfLines() {
+        return totalNbOfLines;
+    }
+
+    public void setTotalNbOfLines(int totalNbOfLines) {
+        this.totalNbOfLines = totalNbOfLines;
+    }
 
     @Override
     public DataWrapper parse(File f) throws NullValueRunTimeException {
         try {
             Map<String, Integer> headers = openFile(f);
 
-            //TODO exceptions has to be emptied at each new file
-            if ((csvTable.isEmpty())) {
-                // Error while openingFile or no entries. Return null
-                return null;
-            }
+            Task<DataWrapper> startTreatment = new Task<DataWrapper>() {
+                @Override
+                protected DataWrapper call() throws Exception {
 
-            // For each row, determine whether it is a user row or a container row.
-            Set<Emplacement> emplacements = new HashSet<>();
-            ParentRowParser parentRowParser = new ParentRowParser(headers);
+                    //TODO exceptions has to be emptied at each new file
+                    if ((csvTable.isEmpty())) {
+                        // Error while openingFile or no entries. Return null
+                        return null;
+                    }
 
+                    // For each row, determine whether it is a user row or a container row.
+                    Set<Emplacement> emplacements = new HashSet<>();
+                    ParentRowParser parentRowParser = new ParentRowParser(headers);
+                    int progress = 0;
 
-            // First fill Usagers to be able to search them and link them to their Conteneur
-            resetCodeUsager();
-            for (String[] r : csvTable) {
-                if (parentRowParser.supports(r)) {
-                    emplacements.add(parentRowParser.parse(r));
+                    // First fill Usagers to be able to search them and link them to their Conteneur
+                    resetCodeUsager();
+                    for (String[] r : csvTable) {
+                        if (parentRowParser.supports(r)) {
+                            emplacements.add(parentRowParser.parse(r));
+                            updateProgress(progress ++,totalNbOfLines);
+                        }
+                    }
+
+                    ChildRowParser childRowParser = new ChildRowParser(headers, emplacements);
+                    for (String[] r : csvTable) {
+                        if (childRowParser.supports(r)) {
+                            childRowParser.parse(r);
+                            updateProgress(progress ++,totalNbOfLines);
+                        }
+                    }
+
+                    return new DataWrapper(new ArrayList<>(emplacements), new ArrayList<>(exceptions));
                 }
-            }
+            };
 
-            ChildRowParser childRowParser = new ChildRowParser(headers, emplacements);
-            for (String[] r : csvTable) {
-                if (childRowParser.supports(r)) {
-                    childRowParser.parse(r);
-                }
-                counter ++;
-            }
-            return new DataWrapper(new ArrayList<>(emplacements), new ArrayList<>(exceptions));
+            ProgressBar pBar = new ProgressBar();
+            pBar.progressProperty().bind(startTreatment.progressProperty());
+
+            Label statusLabel = new Label();
+            statusLabel.setText("Progress");
+            VBox root = new VBox(statusLabel,pBar);
+
+            root.setFillWidth(true);
+            root.setAlignment(Pos.CENTER);
+
+
+
+            Thread initiate = new Thread(startTreatment);
+            initiate.start();//TODO thread n'est pas attendu
+
+            return startTreatment.getValue();
+
         } catch (Exception e) {
-            System.out.printf(counter.toString());
+            //System.out.printf(counter.toString());TODO Exception message
             exceptions.add(e);
             throw new NullValueRunTimeException(e);
         }
@@ -79,6 +119,8 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
                     row = csvReader.readLine();
                 }
             }
+
+            this.totalNbOfLines = csvTable.size();
         }
         catch (IOException e) {
             exceptions.add(e);
