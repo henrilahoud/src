@@ -21,9 +21,11 @@
     </VBox>
     <VBox fx:id="progressBarVBox" alignment="BOTTOM_CENTER" prefHeight="100" GridPane.rowIndex="1" visible="false">
         <ProgressBar fx:id="progressBar" progress="0.0"></ProgressBar>
+        <Text mouseTransparent="true" fx:id="progressValue"/>
+        <Text mouseTransparent="true" fx:id="progressMessage"/>
     </VBox>
     <VBox alignment="CENTER" prefHeight="200" GridPane.rowIndex="2">
-        <Button onAction="#handleLoadButtonAction" text="Cliquer pour charger un fichier" />
+        <Button fx:id="loadBtn" text="Cliquer pour charger un fichier" />
     </VBox>
     <VBox alignment="BOTTOM_CENTER" prefHeight="20" GridPane.rowIndex="3">
         <Text mouseTransparent="true" text="Veolia Recyclage et Valorisation des Déchets"/>

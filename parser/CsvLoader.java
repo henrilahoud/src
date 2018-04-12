@@ -1,57 +1,69 @@
 package parser;
 
-import javafx.stage.FileChooser;
-import handler.*;
-import ui.LoadTask;
+import handler.NoDataParsedException;
+import handler.WrongFileTypeException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.function.Consumer;
 
-import static handler.exceptionWrapper.*;
-import static parser.util.StringUtils.*;
-import static ui.UiUtils.*;
+import static parser.util.StringUtils.CSVREGEX;
+import static parser.util.StringUtils.savePath;
 
 public class CsvLoader {
-    private File csvFile;
 
-    public CsvLoader(File f) {
-        csvFile = f;
-        savePath = f.getParentFile();
+  private File csvFile;
+  private Consumer<Integer> onProgressUpdateListener;
+
+  public CsvLoader(File f) {
+    csvFile = f;
+    savePath = f.getParentFile();
+  }
+
+  public CsvLoader(File f, Consumer<Integer> onProgressUpdateListener) {
+    this(f);
+    this.onProgressUpdateListener = onProgressUpdateListener;
+  }
+
+  private void updateProgress(Integer progress) {
+    if (onProgressUpdateListener != null) {
+      onProgressUpdateListener.accept(progress);
     }
+  }
 
-    private boolean isFileSelected() {
-        return !(csvFile == null);
+  private boolean isFileSelected() {
+    return !(csvFile == null);
+  }
+
+  private boolean isCsv() {
+    return csvFile.getPath().toLowerCase().matches(CSVREGEX);
+  }
+
+  public DataWrapper load() throws Exception {
+    // TODO henri regarde ici comment on gère une exception
+    if (!isFileSelected()) {
+      // Something bad happened. We cannot display UI here. This is a business component. Notify error
+      throw new FileNotFoundException();
     }
-
-    private boolean isCsv() {
-        return csvFile.getPath().toLowerCase().matches(CSVREGEX);
+    if (!isCsv()) {
+      // Something bad happened. We cannot display UI here. This is a business component. Notify error
+      throw new WrongFileTypeException();
     }
+    updateProgress(10);
+    // TODO henri ici on sait que tout va bien, on continue et on n'est pas dans un sapin de noel de if
+    CsvParser parser = new CsvParser((progress) -> {
+      // nous sommes à l'intérieur d'une lambda, c'est une fonction qu'on passe en paramètre.
+      updateProgress(Math.max(10, progress));
+    });
+    DataWrapper wrapper = parser.parse(csvFile);
 
-    public void load() {
-        try {
-            if (isFileSelected()) {
-                if (isCsv()) {
-                    CsvParser parser = new CsvParser();
-                    DataWrapper wrapper = parser.parse(csvFile);
-
-
-
-                    if (wrapper != null) {
-                       // CsvWriter writer = new CsvWriter(wrapper);
-                       // writer.write();
-                    }
-                    else {
-                        warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
-                    }
-                }
-                else {
-                    warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT) ;
-                }
-            }
-        }
-        catch (NullValueRunTimeException e) {
-            exceptions.add(e);
-            warnUser("Erreur fatale", "Veuillez transmettre cette erreur à l'équipe RIVP :",e.getMessage());
-        }
+    if (wrapper == null) {
+      // Something bad happened. We cannot display UI here. This is a business component. Notify error instead.
+      throw new NoDataParsedException();
     }
+    return wrapper;
+  }
 }
+      
+
 

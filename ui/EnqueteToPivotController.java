@@ -1,38 +1,25 @@
 package ui;
 
-import handler.NullValueRunTimeException;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import model.Emplacement;
-import parser.*;
-import parser.util.HeaderUtils;
-import parser.util.StringUtils;
+import parser.DataWrapper;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.io.FileNotFoundException;
 
-//import static handler.exceptionWrapper.exceptions;
-import static parser.util.HeaderUtils.resetCodeUsager;
 import static parser.util.StringUtils.CSVREGEX;
 import static parser.util.StringUtils.savePath;
-import static ui.UiUtils.*;
+import static ui.UiUtils.ERRORTITLE;
+import static ui.UiUtils.NODATACONTENT;
+import static ui.UiUtils.NODATAHEADER;
 import static ui.UiUtils.WRONGTYPECONTENT;
+import static ui.UiUtils.WRONGTYPEHEADER;
 import static ui.UiUtils.warnUser;
 
 public class EnqueteToPivotController {
@@ -41,229 +28,141 @@ public class EnqueteToPivotController {
     @FXML
     private ProgressBar progressBar;
     @FXML
-    private GridPane gridPane;
-
-    private BufferedReader csvReader;
-    private ArrayList<String[]> csvTable;
-    private int totalNbOfLines;
-
+    private Text progressValue;
     @FXML
-    protected void handleLoadButtonAction(ActionEvent event) throws Exception {
-        //CsvLoader loader = new CsvLoader();
-        try {
-            /*
-            Stage fileChooserStage = new Stage();
-
-
-            fileChooserStage.show();
-
-            FileChooser openFileWindow = new FileChooser();
-            File csvFile = openFileWindow.showOpenDialog(fileChooserStage);
-
-            if (csvFile == null) {
-                warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
-
-            } else if (!(csvFile.getPath().toLowerCase().matches(CSVREGEX))) {
-                warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT);
-            }
-            */
-
-
-            //If file verification successful, begin process
-
-            progressBarVBox.setVisible(true);
-
-            //CsvParser parser = new CsvParser();
-            //DataWrapper wrapper = parser.parse(csvFile);
-
-            ArrayList<Emplacement> emplacements = parse(/*csvFile*/);
-
-            progressBarVBox.setVisible(false);
-
-            if (emplacements != null) {
-                CsvWriter writer = new CsvWriter(emplacements);
-                writer.write();
-            } else {
-                warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
-            }
-
-        } catch (Exception e) {
-            //exceptions.add(e);
-            warnUser("Erreur fatale", "Veuillez transmettre cette erreur à l'équipe RIVP :", e.getMessage());
-        }
-
-        //progressBarVBox.setVisible(true);
-
-
-    }
-
-    /*
-    private void load(File csvFile) throws Exception {
-        try {
-            if (csvFile != null) {
-                if (csvFile.getPath().toLowerCase().matches(CSVREGEX)) {
-
-                    //If file verification successful, begin process
-                    progressBarVBox.setVisible(true);
-
-                    //CsvParser parser = new CsvParser();
-                    //DataWrapper wrapper = parser.parse(csvFile);
-
-                    ArrayList<Emplacement> emplacements = parse(csvFile);
-
-                    progressBarVBox.setVisible(false);
-
-                    if (emplacements != null) {
-                        CsvWriter writer = new CsvWriter(emplacements);
-                        writer.write();
-                    } else {
-                        warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
-                    }
-                } else {
+    private Text progressMessage;
+    @FXML
+    private GridPane gridPane;
+    @FXML
+    private Button loadBtn;
+    
+    @FXML
+    public void initialize() {
+        loadBtn.setOnAction(event -> {
+            try {
+                // Show file chooser (blocking)
+                FileChooser openFileWindow = new FileChooser();
+                // Wait for file
+                File csvFile = openFileWindow.showOpenDialog(((Node)event.getTarget()).getScene().getWindow());
+                if (csvFile == null) {
+                    warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
+                    return; // Need to exit here
+                } else if (!(csvFile.getPath().toLowerCase().matches(CSVREGEX))) {
                     warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT);
+                    return; // Need to exit here
                 }
-            }
-        } catch (Exception e) {
-            //exceptions.add(e);
-            warnUser("Erreur fatale", "Veuillez transmettre cette erreur à l'équipe RIVP :", e.getMessage());
-        }
-    }
-    */
+                
+                // If file verification successful, begin process by showing progressbar
+                showProgressBar();
+                
+                // Then begin loading process
+                loadAndParseCsvFile(csvFile);
 
-
-    private ArrayList<Emplacement> parse(/*File f*/) throws Exception {
-        try {
-            Map<String, Integer> headers = openFile(/*f*/);
-
-            //TODO exceptions has to be emptied at each new file
-            if ((csvTable.isEmpty())) {
-                // Error while openingFile or no entries. Return null
-                return null;
+            } catch (Exception e) {
+                warnUser("Erreur fatale", "Veuillez transmettre cette erreur à l'équipe RIVP :", e.getMessage());
             }
 
-            // For each row, determine whether it is a user row or a container row.
-            Set<Emplacement> emplacements = new HashSet<>();
-            ParentRowParser parentRowParser = new ParentRowParser(headers);
-            int progress = 0;
-                // First fill Usagers to be able to search them and link them to their Conteneur
-                resetCodeUsager();
-                for (String[] r : csvTable) {
-                    if (parentRowParser.supports(r)) {
-                        emplacements.add(parentRowParser.parse(r));
-                        progressBar.setProgress(progress++ / totalNbOfLines);
-                    }
-                }
-
-                ChildRowParser childRowParser = new ChildRowParser(headers, emplacements);
-                for (String[] r : csvTable) {
-                    if (childRowParser.supports(r)) {
-                        childRowParser.parse(r);
-                        progressBar.setProgress(progress++ / totalNbOfLines);
-                    }
-                }
-
-                return new ArrayList<>(emplacements);
-            }
-
-            catch (Exception e) {
-            //System.out.printf(counter.toString());TODO Exception message
-            //exceptions.add(e);
-            throw new Exception(e);
-        }
+        });
     }
-
-    /*
-    private ArrayList<Emplacement> parse(File f) throws Exception {
-        try {
-            Map<String, Integer> headers = openFile(f);
-
-            Task<ArrayList<Emplacement>> startTreatment = new Task<ArrayList<Emplacement>>() {
-                @Override
-                protected ArrayList<Emplacement> call() throws Exception {
-
-                    //TODO exceptions has to be emptied at each new file
-                    if ((csvTable.isEmpty())) {
-                        // Error while openingFile or no entries. Return null
-                        return null;
-                    }
-
-                    // For each row, determine whether it is a user row or a container row.
-                    Set<Emplacement> emplacements = new HashSet<>();
-                    ParentRowParser parentRowParser = new ParentRowParser(headers);
-                    int progress = 0;
-
-                    // First fill Usagers to be able to search them and link them to their Conteneur
-                    resetCodeUsager();
-                    for (String[] r : csvTable) {
-                        if (parentRowParser.supports(r)) {
-                            emplacements.add(parentRowParser.parse(r));
-                            progressBar.setProgress(progress++ / totalNbOfLines);
-                        }
-                    }
-
-                    ChildRowParser childRowParser = new ChildRowParser(headers, emplacements);
-                    for (String[] r : csvTable) {
-                        if (childRowParser.supports(r)) {
-                            childRowParser.parse(r);
-                            progressBar.setProgress(progress++ / totalNbOfLines);
-                        }
-                    }
-
-                    return new ArrayList<>(emplacements);
-                }
-
-                @Override
-                protected void succeeded() {
-                    System.out.println("Job Done");
-                }
-            };
-
-            startTreatment.setOnSucceeded(e-> startTreatment.getValue());
-
-            Thread initiate = new Thread(startTreatment);
-            //TODO thread n'est pas attendu
-
-            initiate.start();
-
-            return null;
-
-        } catch (Exception e) {
-            //System.out.printf(counter.toString());TODO Exception message
-            //exceptions.add(e);
-            throw new NullValueRunTimeException(e);
-        }
+    
+    private void showProgressBar() {
+      progressBarVBox.setVisible(true);
     }
-    */
-
-    private Map<String, Integer> openFile(/*File f*/) throws Exception {
-        Map<String, Integer> headers = null;
-
-        try {
-            csvReader = Files.newBufferedReader(new File("/Users/Henri/Desktop/2018_04_04_10_33_16_1.csv").toPath(), StandardCharsets.ISO_8859_1);
-            csvTable = new ArrayList<>();
-
-            // Parse header
-            String header = csvReader.readLine();
-            headers = HeaderUtils.mapHeaders(header);
-
-            // Parse rows
-            if (headers != null) {
-                String row = csvReader.readLine();
-                while (row != null) {
-                    csvTable.add(StringUtils.splitRow(row));
-                    row = csvReader.readLine();
-                }
-            }
-
-            this.totalNbOfLines = csvTable.size();
-        }
-        catch (Exception e) {
-            //exceptions.add(e);
-            return null;
-        }
-        finally {
-            csvReader.close();
-            return headers;
-        }
+    
+    private void hideProgressBar() {
+      progressBarVBox.setVisible(false);
     }
+    
+    
+    private void updateProgress(Number n) {
+      progressBar.setProgress(n.doubleValue());
+      int progressPercent = (int) (Math.floor(n.doubleValue() * 100));
+      progressValue.setText(String.valueOf(progressPercent) + " %");
+    }
+    
+    private void loadAndParseCsvFile(File csvFile) {
+      // THIS CODE IS CALLED FROM MAIN THREAD
+      
+      // 1: Create Load CSV Task
+      LoadTask loadTask = LoadTask.create(csvFile);
+      
+      loadTask.progressProperty().addListener((observable, oldValue, newValue) -> {
+        updateProgress(newValue);
+        String text;
+        int progressPercent = (int) (Math.floor((double) newValue * 100));
+        if (progressPercent <= 10) {
+          text = "Loading file";
+        } else if (progressPercent < 20) {
+          text = "Sorting user and container rows";
+        } else if (progressPercent < 60) {
+          text = "Parsing parent rows";
+        } else if (progressPercent < 100) {
+          text = "Parsing child rows";
+        } else {
+          text = "Loading";
+        }
+        progressMessage.setText(text);
+      });
+      loadTask.setOnSucceeded(e -> {
+        // THIS CODE WILL BE EXECUTED ON MAIN THREAD
+        // CSV was loaded successfully. Get result and save
+        DataWrapper wrapper = loadTask.getValue();
+        updateProgress(1.0);
+        progressMessage.setText("File successfully loaded and parsed");
+        saveCsvFile(wrapper);
+      });
+      loadTask.setOnFailed(e -> {
+        // THIS CODE WILL BE EXECUTED ON MAIN THREAD
+        // TODO henri regarde comment on gère l'UI récupérée à partir d'une exception ici
+        // Your background thread code raised an exception.
+        // Too bad. Now handle it here!
+        if (loadTask.getException() instanceof FileNotFoundException) {
+          // TODO henri Mon thread a lancé une exception FileNotFound, donc je vais notifier ici car je suis dans le main thread.
+          // J'ai donc séparé ma logique business de ma présentation
+          warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
+        } else {
+          // TODO implement other errors
+          warnUser(ERRORTITLE, "TODO", "TODO");
+        }
+        // Error has happened, so we hide progress bar
+        hideProgressBar();
+      });
+      
+      // HERE we run the other thread which will call the loadTask code and handle all success / callback events on calling thread
+      new Thread(loadTask).start();
+    }
+    
+    private void saveCsvFile(DataWrapper data) {
+      // THIS CODE IS CALLED FROM MAIN THREAD
+      if (data.getEmplacements() == null) {
+        warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
+        return;
+      }
+      // Show save as dialog
+      FileChooser saveAs = new FileChooser();
+      FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Fichiers CSV","*.csv");
+      saveAs.getExtensionFilters().add(filter);
+      saveAs.setInitialDirectory(savePath);
+      saveAs.setTitle("Emplacement du fichier généré");
+      File output = saveAs.showSaveDialog(progressBar.getScene().getWindow());
+      progressMessage.setText("Saving to file");
+      WriteTask writeTask = WriteTask.create(output, data);
+      writeTask.progressProperty().addListener((observable, oldValue, newValue) -> {
+        updateProgress(newValue);
+      });
+      writeTask.setOnSucceeded(e -> {
+        updateProgress(1);
+        progressMessage.setText("File saved successfully");
+        // THIS CODE IS CALLED FROM MAIN THREAD
+        // EVERYTHING WENT WELL
+        // TODO henri ici mets que tout s'est bien déroulé et cache ta progress bar
+      });
+      writeTask.setOnFailed(e -> {
+        Throwable exception = writeTask.getException();
+        throw new IllegalStateException(exception);
+        // TODO henri ici regarde ce qu'il peut se passer de mal et affiche une erreur en fonction. et cache ta progress bar
+      });
+      new Thread(writeTask).start();
+    }
+    
 }

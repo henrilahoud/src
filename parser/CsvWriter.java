@@ -1,37 +1,57 @@
 package parser;
 
-import javafx.stage.*;
-import model.*;
-import handler.*;
+import model.Conteneur;
+import model.Emplacement;
 import parser.util.StringUtils;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Consumer;
 
+import static handler.ExceptionWrapper.exceptions;
 import static parser.util.HeaderUtils.*;
-import static parser.util.StringUtils.*;
-import static ui.UiUtils.*;
-import static handler.exceptionWrapper.*;
+import static parser.util.StringUtils.joinRow;
+import static parser.util.StringUtils.reformat;
+import static parser.util.StringUtils.reformatLastColumn;
 
 public class CsvWriter {
-    private ArrayList<Emplacement> emplacements;
+    private List<Emplacement> emplacements;
     private List<String> newTable;
-
-    public CsvWriter(ArrayList<Emplacement> emplacements) throws NullValueRunTimeException {
+    private Consumer<Integer> onProgressUpdateListener;
+    private File output;
+    
+    public CsvWriter(File output, List<Emplacement> emplacements) {
         this.emplacements = emplacements;
+        this.output = output;
+    }
+
+    public CsvWriter(File output, List<Emplacement> emplacements, Consumer<Integer> onProgressUpdateListener) {
+        this.emplacements = emplacements;
+        this.onProgressUpdateListener = onProgressUpdateListener;
+        this.output = output;
+    }
+    
+    private void updateProgress(Integer progress) {
+        if (onProgressUpdateListener != null) {
+            onProgressUpdateListener.accept(progress);
+        }
     }
 
     public void write() {
         try {
             newTable = new ArrayList<>();
-
-            Collections.sort(emplacements, (Emplacement e1, Emplacement e2) -> e1.getUsager().getCodeUsager() - e2.getUsager().getCodeUsager());
-
+            updateProgress(0);
+            Collections.sort(emplacements, Comparator.comparingInt(e2 -> e2.getUsager().getCodeUsager()));
+            updateProgress(20);
             for (Emplacement e : emplacements) {
                 prepareRows(e);
             }
+            updateProgress(60);
             generateCsv();
         }
         catch (IOException e) {
@@ -166,31 +186,25 @@ public class CsvWriter {
     }
 
     public void generateCsv() throws IOException {
-        adviseUser(SAVEFILETITLE, SAVEFILEHEADER, SAVEFILECONTENT);
-
-        FileChooser saveAs = new FileChooser();
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Fichiers CSV","*.csv");
-        saveAs.getExtensionFilters().add(filter);
-        saveAs.setInitialDirectory(savePath);
-        saveAs.setTitle("Emplacement du fichier généré");
-
-        File NewCsv = saveAs.showSaveDialog(null);
-
-        if (NewCsv != null){
-            FileWriter Writer = new FileWriter(new File(NewCsv.toString()));
-
-            // Append titles
-            Writer.append(MAINTITLES);
-            Writer.append(SUBTITLES);
-
-            for (String row : newTable){
-                Writer.append(row);
-            }
-            Writer.flush();
-            Writer.close();
-
-            //TODO compte est faux
-            adviseUser(JOBDONETITLE, JOBDONEHEADER, JOBDONECONTENT);
+        // TODO henri: c'est quoi comme type de code ça??? #NeverAgain
+        //adviseUser(SAVEFILETITLE, SAVEFILEHEADER, SAVEFILECONTENT);
+        if (output == null) {
+            throw new IllegalStateException();
         }
+        FileWriter writer = new FileWriter(output);
+
+        // Append titles
+        writer.append(MAINTITLES);
+        writer.append(SUBTITLES);
+        updateProgress(80);
+        for (String row : newTable) {
+            writer.append(row);
+        }
+        writer.flush();
+        writer.close();
+
+        // TODO henri: on avait dit quoi sur never again?
+        // adviseUser(JOBDONETITLE, JOBDONEHEADER, JOBDONECONTENT);
+        updateProgress(100);
     }
 }
