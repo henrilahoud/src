@@ -14,7 +14,8 @@ public abstract class UiUtils {
     public static final String SAVEFILEHEADER = "Veuillez choisir l'emplacement du fichier généré";
     public static final String SAVEFILECONTENT = "";
     public static final String JOBDONEHEADER = "Le fichier a été sauvegardé avec succès";
-    public static final String JOBDONECONTENT = "Nombre d'Emplacements : " + Integer.toString(Statistics.nbEmplacements) + "\nNombre de Conteneurs : " + Integer.toString(Statistics.nbConteneurs);
+    // TODO delete
+    // public static String JOBDONECONTENT = "Nombre d'Emplacements : " + Integer.toString(Statistics.nbEmplacements) + "\nNombre de Conteneurs : " + Integer.toString(Statistics.nbConteneurs);
 
 
     public static void adviseUser(String title, String header, String content) {
@@ -31,5 +32,9 @@ public abstract class UiUtils {
         Msg.setHeaderText(header);
         Msg.setContentText(content);
         Msg.showAndWait();
+    }
+
+    public static void adviseUserJobDone(int nbEmplacements, int nbConteneurs) {
+        adviseUser(JOBDONETITLE, JOBDONEHEADER, "Nombre d'Emplacements : " + Integer.toString(nbEmplacements) + "\nNombre de Conteneurs : " + Integer.toString(nbConteneurs));
     }
 }

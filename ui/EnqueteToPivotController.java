@@ -1,6 +1,7 @@
 package ui;
 
 import handler.NoDataParsedException;
+import handler.NullValueRunTimeException;
 import handler.UnsupportedFileException;
 import handler.WrongFileTypeException;
 import javafx.fxml.FXML;
@@ -126,7 +127,10 @@ public class EnqueteToPivotController {
             warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
         } else if (loadTask.getException() instanceof UnsupportedFileException) {
             warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
-        } else {
+        } else if (loadTask.getException() instanceof NullValueRunTimeException) {
+            warnUser(ERRORTITLE, "Veuillez transmettre cette erreur à l'équipe RIVP :", loadTask.getException().getMessage());
+        }
+        else {
             warnUser(ERRORTITLE, "TODO", "TODO");
         }
 
@@ -166,9 +170,10 @@ public class EnqueteToPivotController {
         writeTask.setOnSucceeded(e -> {
             updateProgress(1);
             progressMessage.setText("File saved successfully");
+
             // THIS CODE IS CALLED FROM MAIN THREAD
             // EVERYTHING WENT WELL
-            adviseUser(JOBDONETITLE, JOBDONEHEADER, JOBDONECONTENT);
+            adviseUserJobDone(data.getNbEmplacements(), data.getNbConteneurs());
             hideProgressBar();
       });
       writeTask.setOnFailed(e -> {
@@ -177,7 +182,6 @@ public class EnqueteToPivotController {
         }
 
         hideProgressBar();
-        // TODO henri ici regarde ce qu'il peut se passer de mal et affiche une erreur en fonction. et cache ta progress bar
       });
       new Thread(writeTask).start();
     }

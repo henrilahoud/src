@@ -69,8 +69,7 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
         // First fill Usagers to be able to search them and link them to their Conteneur
         for (String[] r : csvTable) {
             if (parentRowParser.supports(r)) {
-                if (!(emplacements.add(parentRowParser.parse(r)))) {
-                }
+                emplacements.add(parentRowParser.parse(r));
                 updateProgress(++progress * 100 / totalNbOfLines);
             }
         }
@@ -83,7 +82,7 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
                 updateProgress(++progress * 100 / totalNbOfLines);
             }
         }
-        return new DataWrapper(new ArrayList<>(emplacements), new ArrayList<>(exceptions));
+        return new DataWrapper(new ArrayList<>(emplacements), Statistics.nbEmplacements, Statistics.nbConteneurs);
     }
 
     private Map<String, Integer> openFile(File f) throws IOException {

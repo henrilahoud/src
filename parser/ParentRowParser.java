@@ -128,8 +128,9 @@ public class ParentRowParser implements GenericParser<Emplacement,String[]> {
             return emp;
         }
         catch (Exception e) {
-            exceptions.add(e);
-            throw new NullValueRunTimeException(e);
+            // TODO delete
+            // exceptions.add(e);
+            throw new NullValueRunTimeException();
         }
     }
 }
