@@ -1,5 +1,7 @@
 package parser.util;
 
+import handler.UnsupportedFileException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -208,15 +210,13 @@ public abstract class HeaderUtils {
         for (int i = 0; i < headerStrs.length; i++) {
             headers.put(headerStrs[i], i);
         }
-
-        if (headers.keySet().contains(COLUMN_PARENTID)) {
-            return headers;
+        if (!(headers.keySet().contains(COLUMN_PARENTID)) || !(headers.size() >= 81)) {
+            throw new UnsupportedFileException();
         }
-        // TODO throw
-        return null;
+        return headers;
     }
 
     public static void resetCodeUsager() {
-        CODEUSAGER = 1;
+        CODEUSAGER = 0;
     }
 }

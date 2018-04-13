@@ -1,6 +1,7 @@
 package model;
 
 import com.sun.tools.javac.util.StringUtils;
+import parser.util.Statistics;
 
 import java.text.Normalizer;
 
@@ -25,6 +26,10 @@ public class Usager {
     private String nomOuRaisonSocialeFacturation;
     private AdresseGenerique adresseFacturation;
     private Reglement reglement;
+
+    public Usager() {
+        ++Statistics.nbUsagers;
+    }
 
     public int getCodeUsager() {
         return codeUsager;

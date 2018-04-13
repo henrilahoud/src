@@ -29,8 +29,7 @@ public class ParentRowParser implements GenericParser<Emplacement,String[]> {
 
             emp.setIdentifier(row[columns.get(COLUMN_IDENTIFIER)]);
 
-            u.setCodeUsager(CODEUSAGER);
-            CODEUSAGER ++;
+            u.setCodeUsager(++CODEUSAGER);
 
             Contact c1 = new Contact();
             c1.setCivilite(row[columns.get(COLUMN_ENQUETE_CIVILITECONTACT1)]);

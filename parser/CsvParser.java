@@ -1,7 +1,9 @@
 package parser;
 
+import handler.NoDataParsedException;
 import model.Emplacement;
 import parser.util.HeaderUtils;
+import parser.util.Statistics;
 import parser.util.StringUtils;
 
 import java.io.BufferedReader;
@@ -17,6 +19,7 @@ import java.util.function.Consumer;
 
 import static handler.ExceptionWrapper.exceptions;
 import static parser.util.HeaderUtils.resetCodeUsager;
+import static parser.util.Statistics.resetStats;
 
 public class CsvParser implements GenericParser<DataWrapper,File> {
 
@@ -47,13 +50,16 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
     @Override
     public DataWrapper parse(File f) throws Exception {
         Map<String, Integer> headers = openFile(f);
-        int progress = 10;
 
-        //TODO exceptions has to be emptied at each new file
+        resetStats();
+        resetCodeUsager();
+
+        int progress = 0;
+
+
         if ((csvTable.isEmpty())) {
+            throw new NoDataParsedException();
             // Error while openingFile or no entries. Return null
-            // FIXME should throw exception instead.
-            return null;
         }
         updateProgress(progress);
         // For each row, determine whether it is a user row or a container row.
@@ -61,27 +67,23 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
         ParentRowParser parentRowParser = new ParentRowParser(headers);
         
         // First fill Usagers to be able to search them and link them to their Conteneur
-        resetCodeUsager();
-        updateProgress(20);
-        progress = 0;
-        // Parent row parser = progress from 20 to 60
         for (String[] r : csvTable) {
             if (parentRowParser.supports(r)) {
-                emplacements.add(parentRowParser.parse(r));
-                updateProgress(20 + (40 * ++progress) / totalNbOfLines);
+                if (!(emplacements.add(parentRowParser.parse(r)))) {
+                }
+                updateProgress(++progress * 100 / totalNbOfLines);
             }
         }
-        // Child row parser = progress from 60 to 100
-        progress = 0;
+
+        //Then fill conteneurs
         ChildRowParser childRowParser = new ChildRowParser(headers, emplacements);
         for (String[] r : csvTable) {
             if (childRowParser.supports(r)) {
                 childRowParser.parse(r);
-                updateProgress(60 + (40 * ++progress) / totalNbOfLines);
+                updateProgress(++progress * 100 / totalNbOfLines);
             }
         }
         return new DataWrapper(new ArrayList<>(emplacements), new ArrayList<>(exceptions));
-            
     }
 
     private Map<String, Integer> openFile(File f) throws IOException {
@@ -96,13 +98,14 @@ public class CsvParser implements GenericParser<DataWrapper,File> {
             headers = HeaderUtils.mapHeaders(header);
 
             // Parse rows
-            if (headers != null) {
+            if (headers == null) {
+            }
                 String row = csvReader.readLine();
                 while (row != null) {
                     csvTable.add(StringUtils.splitRow(row));
                     row = csvReader.readLine();
                 }
-            }
+
 
             this.totalNbOfLines = csvTable.size();
             return headers;

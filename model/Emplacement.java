@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static parser.util.HeaderUtils.CODEUSAGER;
+
 public class Emplacement {
 
     private String identifier;
@@ -86,7 +88,10 @@ public class Emplacement {
     }
 
     public Emplacement() {
-        Statistics.nbEmplacements ++;
+        ++Statistics.nbEmplacements;
+        if (Statistics.nbEmplacements - CODEUSAGER > 1) {
+            int i= 0;
+        }
     }
 
     public boolean isValid() {

@@ -101,8 +101,7 @@ public class Conteneur {
 
     public Conteneur(boolean isCounted) {
         if (isCounted) {
-            nbConteneurs ++;
-            this.conteneurInternalId = nbConteneurs; //Only for Pays de Valois
+            this.conteneurInternalId = ++nbConteneurs; //Only for Pays de Valois
         }
     }
 

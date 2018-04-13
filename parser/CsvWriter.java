@@ -186,8 +186,6 @@ public class CsvWriter {
     }
 
     public void generateCsv() throws IOException {
-        // TODO henri: c'est quoi comme type de code ça??? #NeverAgain
-        //adviseUser(SAVEFILETITLE, SAVEFILEHEADER, SAVEFILECONTENT);
         if (output == null) {
             throw new IllegalStateException();
         }
@@ -203,8 +201,6 @@ public class CsvWriter {
         writer.flush();
         writer.close();
 
-        // TODO henri: on avait dit quoi sur never again?
-        // adviseUser(JOBDONETITLE, JOBDONEHEADER, JOBDONECONTENT);
         updateProgress(100);
     }
 }

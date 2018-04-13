@@ -40,7 +40,6 @@ public class CsvLoader {
   }
 
   public DataWrapper load() throws Exception {
-    // TODO henri regarde ici comment on gère une exception
     if (!isFileSelected()) {
       // Something bad happened. We cannot display UI here. This is a business component. Notify error
       throw new FileNotFoundException();
@@ -49,11 +48,12 @@ public class CsvLoader {
       // Something bad happened. We cannot display UI here. This is a business component. Notify error
       throw new WrongFileTypeException();
     }
-    updateProgress(10);
-    // TODO henri ici on sait que tout va bien, on continue et on n'est pas dans un sapin de noel de if
+
+    updateProgress(0);
+
     CsvParser parser = new CsvParser((progress) -> {
       // nous sommes à l'intérieur d'une lambda, c'est une fonction qu'on passe en paramètre.
-      updateProgress(Math.max(10, progress));
+      updateProgress(progress);
     });
     DataWrapper wrapper = parser.parse(csvFile);
 

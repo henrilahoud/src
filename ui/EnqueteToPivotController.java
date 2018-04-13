@@ -1,5 +1,8 @@
 package ui;
 
+import handler.NoDataParsedException;
+import handler.UnsupportedFileException;
+import handler.WrongFileTypeException;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -15,12 +18,7 @@ import java.io.FileNotFoundException;
 
 import static parser.util.StringUtils.CSVREGEX;
 import static parser.util.StringUtils.savePath;
-import static ui.UiUtils.ERRORTITLE;
-import static ui.UiUtils.NODATACONTENT;
-import static ui.UiUtils.NODATAHEADER;
-import static ui.UiUtils.WRONGTYPECONTENT;
-import static ui.UiUtils.WRONGTYPEHEADER;
-import static ui.UiUtils.warnUser;
+import static ui.UiUtils.*;
 
 public class EnqueteToPivotController {
     @FXML
@@ -45,7 +43,8 @@ public class EnqueteToPivotController {
                 // Wait for file
                 File csvFile = openFileWindow.showOpenDialog(((Node)event.getTarget()).getScene().getWindow());
                 if (csvFile == null) {
-                    warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
+                    //TODO not sure if user has to be notified here
+                    //warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
                     return; // Need to exit here
                 } else if (!(csvFile.getPath().toLowerCase().matches(CSVREGEX))) {
                     warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT);
@@ -90,16 +89,20 @@ public class EnqueteToPivotController {
         updateProgress(newValue);
         String text;
         int progressPercent = (int) (Math.floor((double) newValue * 100));
-        if (progressPercent <= 10) {
-          text = "Loading file";
+        if (progressPercent == 0) {
+            text = "Chargement...";
         } else if (progressPercent < 20) {
-          text = "Sorting user and container rows";
+            text = "Ça va aller vite !";
+        } else if (progressPercent < 40) {
+            text = "Bon d'accord je suis optimiste";
         } else if (progressPercent < 60) {
-          text = "Parsing parent rows";
+            text = "Je fais ce que je peux...";
+        } else if (progressPercent < 80) {
+            text = "Je fatigue un peu là...";
         } else if (progressPercent < 100) {
-          text = "Parsing child rows";
+            text = "Allez, dernière ligne droite";
         } else {
-          text = "Loading";
+            text = "Chargement...";
         }
         progressMessage.setText(text);
       });
@@ -108,22 +111,26 @@ public class EnqueteToPivotController {
         // CSV was loaded successfully. Get result and save
         DataWrapper wrapper = loadTask.getValue();
         updateProgress(1.0);
-        progressMessage.setText("File successfully loaded and parsed");
+        progressMessage.setText("Document correctement chargé et parsé");
         saveCsvFile(wrapper);
       });
       loadTask.setOnFailed(e -> {
         // THIS CODE WILL BE EXECUTED ON MAIN THREAD
-        // TODO henri regarde comment on gère l'UI récupérée à partir d'une exception ici
         // Your background thread code raised an exception.
         // Too bad. Now handle it here!
         if (loadTask.getException() instanceof FileNotFoundException) {
-          // TODO henri Mon thread a lancé une exception FileNotFound, donc je vais notifier ici car je suis dans le main thread.
-          // J'ai donc séparé ma logique business de ma présentation
-          warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
+            warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
+        } else if (loadTask.getException() instanceof WrongFileTypeException) {
+            warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT);
+        } else if (loadTask.getException() instanceof NoDataParsedException) {
+            warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
+        } else if (loadTask.getException() instanceof UnsupportedFileException) {
+            warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
         } else {
-          // TODO implement other errors
-          warnUser(ERRORTITLE, "TODO", "TODO");
+            warnUser(ERRORTITLE, "TODO", "TODO");
         }
+
+        // TODO implement other errors
         // Error has happened, so we hide progress bar
         hideProgressBar();
       });
@@ -133,33 +140,43 @@ public class EnqueteToPivotController {
     }
     
     private void saveCsvFile(DataWrapper data) {
-      // THIS CODE IS CALLED FROM MAIN THREAD
-      if (data.getEmplacements() == null) {
+        // THIS CODE IS CALLED FROM MAIN THREAD
+        if (data.getEmplacements() == null) {
         warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
         return;
-      }
-      // Show save as dialog
-      FileChooser saveAs = new FileChooser();
-      FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Fichiers CSV","*.csv");
-      saveAs.getExtensionFilters().add(filter);
-      saveAs.setInitialDirectory(savePath);
-      saveAs.setTitle("Emplacement du fichier généré");
-      File output = saveAs.showSaveDialog(progressBar.getScene().getWindow());
-      progressMessage.setText("Saving to file");
-      WriteTask writeTask = WriteTask.create(output, data);
-      writeTask.progressProperty().addListener((observable, oldValue, newValue) -> {
-        updateProgress(newValue);
-      });
-      writeTask.setOnSucceeded(e -> {
-        updateProgress(1);
-        progressMessage.setText("File saved successfully");
-        // THIS CODE IS CALLED FROM MAIN THREAD
-        // EVERYTHING WENT WELL
-        // TODO henri ici mets que tout s'est bien déroulé et cache ta progress bar
+        }
+        //Advise User that he has to save the created doc
+        adviseUser(SAVEFILETITLE, SAVEFILEHEADER, SAVEFILECONTENT);
+
+        // Show save as dialog
+        FileChooser saveAs = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Fichiers CSV","*.csv");
+        saveAs.getExtensionFilters().add(filter);
+        saveAs.setInitialDirectory(savePath);
+        saveAs.setTitle("Emplacement du fichier généré");
+        File output = saveAs.showSaveDialog(progressBar.getScene().getWindow());
+
+        progressMessage.setText("Sauvegarde du fichier pivot");
+
+        WriteTask writeTask = WriteTask.create(output, data);
+        writeTask.progressProperty().addListener((observable, oldValue, newValue) -> {
+            updateProgress(newValue);
+        });
+
+        writeTask.setOnSucceeded(e -> {
+            updateProgress(1);
+            progressMessage.setText("File saved successfully");
+            // THIS CODE IS CALLED FROM MAIN THREAD
+            // EVERYTHING WENT WELL
+            adviseUser(JOBDONETITLE, JOBDONEHEADER, JOBDONECONTENT);
+            hideProgressBar();
       });
       writeTask.setOnFailed(e -> {
-        Throwable exception = writeTask.getException();
-        throw new IllegalStateException(exception);
+        if (writeTask.getException() instanceof IllegalStateException) {
+            adviseUser(SAVEFILETITLE, SAVEFILEHEADER, SAVEFILECONTENT);
+        }
+
+        hideProgressBar();
         // TODO henri ici regarde ce qu'il peut se passer de mal et affiche une erreur en fonction. et cache ta progress bar
       });
       new Thread(writeTask).start();

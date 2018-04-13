@@ -10,7 +10,7 @@ public abstract class UiUtils {
     public static final String WRONGTYPEHEADER = "Le fichier choisi n'est pas valable";
     public static final String WRONGTYPECONTENT = "Seuls les fichiers CSV sont acceptés par cette application.\nVeuillez choisir un fichier CSV.";
     public static final String NODATAHEADER = "Le fichier choisi ne semble pas correspondre";
-    public static final String NODATACONTENT = "Les intitulés de colonnes ne sont pas identifiés.\nVeuillez vous assurer du bon format du fichier choisi.";
+    public static final String NODATACONTENT = "Les intitulés de colonnes ne sont pas (tous) identifiés.\nVeuillez vous assurer du bon format du fichier choisi.";
     public static final String SAVEFILEHEADER = "Veuillez choisir l'emplacement du fichier généré";
     public static final String SAVEFILECONTENT = "";
     public static final String JOBDONEHEADER = "Le fichier a été sauvegardé avec succès";

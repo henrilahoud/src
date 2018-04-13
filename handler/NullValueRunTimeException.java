@@ -1,9 +1,6 @@
 package handler;
 
-/**
- * Fixme HENRI c'est quoi ce truc?
- */
-public class NullValueRunTimeException extends RuntimeException {
+public class NullValueRunTimeException extends IllegalStateException {
     public NullValueRunTimeException(Exception e) {
     }
 }
