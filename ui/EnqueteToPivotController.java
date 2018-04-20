@@ -54,6 +54,7 @@ public class EnqueteToPivotController {
                 
                 // If file verification successful, begin process by showing progressbar
                 showProgressBar();
+                disableButton();
                 
                 // Then begin loading process
                 loadAndParseCsvFile(csvFile);
@@ -72,7 +73,14 @@ public class EnqueteToPivotController {
     private void hideProgressBar() {
       progressBarVBox.setVisible(false);
     }
-    
+
+    private void disableButton() {
+        loadBtn.setDisable(true);
+    }
+
+    private void enableButton() {
+        loadBtn.setDisable(false);
+    }
     
     private void updateProgress(Number n) {
       progressBar.setProgress(n.doubleValue());
@@ -113,6 +121,7 @@ public class EnqueteToPivotController {
         DataWrapper wrapper = loadTask.getValue();
         updateProgress(1.0);
         progressMessage.setText("Document correctement chargé et parsé");
+        enableButton();
         saveCsvFile(wrapper);
       });
       loadTask.setOnFailed(e -> {
@@ -128,7 +137,7 @@ public class EnqueteToPivotController {
         } else if (loadTask.getException() instanceof UnsupportedFileException) {
             warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
         } else if (loadTask.getException() instanceof NullValueRunTimeException) {
-            warnUser(ERRORTITLE, "Veuillez transmettre cette erreur à l'équipe RIVP :", loadTask.getException().getMessage());
+            warnUser(ERRORTITLE, "Veuillez transmettre cette erreur à l'équipe RIVP", loadTask.getException().toString());
         }
         else {
             warnUser(ERRORTITLE, "TODO", "TODO");
@@ -137,6 +146,7 @@ public class EnqueteToPivotController {
         // TODO implement other errors
         // Error has happened, so we hide progress bar
         hideProgressBar();
+        enableButton();
       });
       
       // HERE we run the other thread which will call the loadTask code and handle all success / callback events on calling thread
