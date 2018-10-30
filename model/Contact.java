@@ -22,20 +22,12 @@ public class Contact {
         return nomOuRaisonSociale;
     }
 
-    public String getNomOuRaisonSocialeFormatted() {
-        return format(nomOuRaisonSociale);
-    }
-
     public void setNomOuRaisonSociale(String nom) {
         this.nomOuRaisonSociale = nom;
     }
 
     public String getPrenom() {
         return prenom;
-    }
-
-    public String getPrenomFormatted() {
-        return format(prenom);
     }
 
     public void setPrenom(String prenom) {
@@ -66,13 +58,20 @@ public class Contact {
         this.email = email;
     }
 
+    //TODO ,00 at the end not taken into account
     private String toTel(String telNumber) {
-        if (telNumber.length() == 1) {
-            return "";
+        String newNumber = telNumber.replace(",00","");
+        switch (newNumber.length()) {
+            case 1 : return "";
+            case 9 : return ("0" + newNumber).replaceFirst("(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})","$1$2$3$4$5");
+            case 10 : return (newNumber).replaceFirst("(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})","$1$2$3$4$5");
         }
-        return ("0" + telNumber).replaceFirst("(\\d{2})(\\d{2})(\\d{2})(\\d{2})(\\d{2})","$1 $2 $3 $4 $5");
+        return newNumber;
     }
 
+    // TODO Anomalies : donnees obligatoires non presentes / civilite si remplissage noms / format tel / email / nb d'habitant si virgule / Siret si diff 14char / nb d'hab > 10 / CP < 5 char / Num Proprietaire
+
+    /* TODO Remove this
     private String format(String toFormat) {
         String normalized = Normalizer.normalize(toFormat, Normalizer.Form.NFD);
 
@@ -83,6 +82,7 @@ public class Contact {
                 .replaceAll("[\\s]+"," ")
                 .trim();
     }
+    */
 
     @Override
     public String toString() {

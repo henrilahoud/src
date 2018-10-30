@@ -1,5 +1,7 @@
 package parser;
 
+import handler.ErrorHandler;
+import handler.PivotError;
 import model.Emplacement;
 
 import java.util.List;
@@ -8,16 +10,14 @@ public class DataWrapper {
     private final List<Emplacement> emplacements;
     private final int nbEmplacements;
     private final int nbConteneurs;
-    // TODO delete
-    // private final List<Exception> exceptionsSet;
+    private final ErrorHandler errorHandler;
 
 
-    public DataWrapper(List<Emplacement> emplacements, int nbEmplacements, int nbConteneurs) {
+    public DataWrapper(List<Emplacement> emplacements, int nbEmplacements, int nbConteneurs, ErrorHandler errorHandler) {
         this.emplacements = emplacements;
         this.nbEmplacements = nbEmplacements;
         this.nbConteneurs = nbConteneurs;
-        // TODO delete the exceptionsSet
-        // this.exceptionsSet = exceptionsSet;
+        this.errorHandler = errorHandler;
     }
 
     public int getNbConteneurs() {
@@ -28,10 +28,9 @@ public class DataWrapper {
         return nbEmplacements;
     }
 
-    // TODO delete
-    // public List<Exception> getExceptionsSet() {
-    //    return exceptionsSet;
-    //}
+    public ErrorHandler getErrorHandler() {
+        return errorHandler;
+    }
 
     public List<Emplacement> getEmplacements() {
         return emplacements;

@@ -89,11 +89,13 @@ public class Emplacement {
 
     public Emplacement() {
         ++Statistics.nbEmplacements;
+        conteneurs = new HashSet<>();
         if (Statistics.nbEmplacements - CODEUSAGER > 1) {
             int i= 0;
         }
     }
 
+    //Checks if Conteneurs are all filled or all empty, otherwise return false
     public boolean isValid() {
         if (conteneurs.size() > 0) {
             Conteneur[] mySet = conteneurs.toArray(new Conteneur[conteneurs.size()]);

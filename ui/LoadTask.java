@@ -1,7 +1,7 @@
 package ui;
 
 import javafx.concurrent.Task;
-import parser.CsvLoader;
+import parser.DaxiumLoader;
 
 import java.io.File;
 
@@ -20,7 +20,7 @@ public class LoadTask extends Task<parser.DataWrapper> {
     
     @Override
     public parser.DataWrapper call() throws Exception {
-        CsvLoader loader = new CsvLoader(input, (progress) -> {
+        DaxiumLoader loader = new DaxiumLoader(input, (progress) -> {
             updateProgress(progress, 100);
         });
         return loader.load();

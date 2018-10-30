@@ -7,20 +7,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.function.Consumer;
 
-import static parser.util.StringUtils.CSVREGEX;
-import static parser.util.StringUtils.savePath;
+import static parser.util.StringUtils.*;
 
-public class CsvLoader {
+public class DaxiumLoader {
 
-  private File csvFile;
+  private File file;
   private Consumer<Integer> onProgressUpdateListener;
 
-  public CsvLoader(File f) {
-    csvFile = f;
+  public DaxiumLoader(File f) {
+    file = f;
     savePath = f.getParentFile();
   }
 
-  public CsvLoader(File f, Consumer<Integer> onProgressUpdateListener) {
+  public DaxiumLoader(File f, Consumer<Integer> onProgressUpdateListener) {
     this(f);
     this.onProgressUpdateListener = onProgressUpdateListener;
   }
@@ -32,11 +31,11 @@ public class CsvLoader {
   }
 
   private boolean isFileSelected() {
-    return !(csvFile == null);
+    return !(file == null);
   }
 
-  private boolean isCsv() {
-    return csvFile.getPath().toLowerCase().matches(CSVREGEX);
+  private boolean isXlsx() {
+    return file.getPath().toLowerCase().matches(XLSXREGEX);
   }
 
   public DataWrapper load() throws Exception {
@@ -44,18 +43,19 @@ public class CsvLoader {
       // Something bad happened. We cannot display UI here. This is a business component. Notify error
       throw new FileNotFoundException();
     }
-    if (!isCsv()) {
+
+    if (!isXlsx()) {
       // Something bad happened. We cannot display UI here. This is a business component. Notify error
       throw new WrongFileTypeException();
     }
 
     updateProgress(0);
 
-    CsvParser parser = new CsvParser((progress) -> {
+    XlsxParser parser = new XlsxParser((progress) -> {
       // nous sommes à l'intérieur d'une lambda, c'est une fonction qu'on passe en paramètre.
       updateProgress(progress);
     });
-    DataWrapper wrapper = parser.parse(csvFile);
+    DataWrapper wrapper = parser.parse(file);
 
     if (wrapper == null) {
       // Something bad happened. We cannot display UI here. This is a business component. Notify error instead.

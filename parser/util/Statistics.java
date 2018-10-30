@@ -5,11 +5,13 @@ public abstract class Statistics {
     public static int nbEmplacementsNotAdded;
     public static int nbConteneurs;
     public static int nbUsagers;
+    public static int nbErrors;
 
     public static void resetStats() {
         nbEmplacements = 0;
         nbEmplacementsNotAdded = 0;
         nbConteneurs = 0;
         nbUsagers = 0;
+        nbErrors = 0;
     }
 }

@@ -9,113 +9,114 @@ public abstract class HeaderUtils {
     public static int CODEUSAGER = 0;
     public static final String DEFAULTDATE = "";
     public static final String DEFAULTVALUE = "";
-    public static final String INPUTDATEPATTERN = "dd.MM.yyyy";
+    public static final String INPUTDATEPATTERN = "dd/MM/yyyy";
     public static final String OUTPUTDATEPATTERN = "dd/MM/yyyy";
     public static final int PIVOTCOLUMNS_NB = 73;
 
     // First 2 rows of output
-    public static final String MAINTITLES = "Renseignements de l'usager occupant;;;;;;;;;;;;;;;;;Renseignements de l'emplacement;;;;;;;;Conteneur;;;;;;;;Cartes;;;;Adresse de facturation;;;;;;;;;;;Renseignements du Propriétaire ou Bailleur;;;;;;;;;;;;;;;Informations TEOMi;;;;Informations SEPA;;;;;\n";
-    public static final String SUBTITLES = "Code usager;Code reprise;Activité professionnelle;Civilité Contact 1;Nom Contact 1;Prénom Contact 1;Civilité Contact 2;Nom Contact 2;Prénom Contact 2;Raison sociale;Téléphone 1;Téléphone 2;Adresse email;Nombre Habitants;Propriétaire / Locataire;Commentaires;N° SIRET;Date d'emménagement;N° de voie + Extension;Type de Voie;Article de la voie;Nom de la voie;CP Ville;Ville;Résidence Principale ou Secondaire;Date de distribution du bac;Flux / Matière;Volume bac (L);Serrure;Fournisseur;N° de puce;N° de cuve;N° de CAB;Type;N° carte;Date d'attribution de la carte;Motif de distribution;Facturer à l'adresse de l'emplacement;Nom complet / Raison sociale;N° App / Etage;Entrée / Bâtiment / Immeuble;Numéro + Libellé de la voie;Complément adresse;CP Ville;Ville;Pays;Catégorie du tiers;Nature juridique du tiers;Code propriétaire;Statut propriétaire ou bailleur ?;Civilité;Nom ou Raison sociale;Prénom;N° App / Etage;Entrée / Bâtiment / Immeuble;Numéro + Libellé de la voie;Complément adresse;CP Ville;Ville;Pays;Téléphone;Téléphone 2;Adresse email;Numéro invariant fiscal;Année de construction du logement;Code Rivoli;Numéro de parcelle;Mode de règlement;Date de création;RUM;Date de mandat;IBAN;Titulaire du compte\n";
+    public static final String MAINTITLES = "Renseignements de l'usager occupant;;;;;;;;;;;;;;;;;Renseignements de l'emplacement;;;;;;;;Conteneur;;;;;;;;Cartes;;;;Adresse de facturation;;;;;;;;;;;Renseignements du Propriétaire ou Bailleur;;;;;;;;;;;;;;;Informations TEOMi;;;;Informations SEPA;;;;;;Erreurs;;;;;;\n";
+    public static final String SUBTITLES = "Code usager;Code reprise;Activité professionnelle;Civilité Contact 1;Nom Contact 1;Prénom Contact 1;Civilité Contact 2;Nom Contact 2;Prénom Contact 2;Raison sociale;Téléphone 1;Téléphone 2;Adresse email;Nombre Habitants;Propriétaire / Locataire;Commentaires;N° SIRET;Date d'emménagement;N° de voie + Extension;Type de Voie;Article de la voie;Nom de la voie;CP Ville;Ville;Résidence Principale ou Secondaire;Date de distribution du bac;Flux / Matière;Volume bac (L);Serrure;Fournisseur;N° de puce;N° de cuve;N° de CAB;Type;N° carte;Date d'attribution de la carte;Motif de distribution;Facturer à l'adresse de l'emplacement;Nom complet / Raison sociale;N° App / Etage;Entrée / Bâtiment / Immeuble;Numéro + Libellé de la voie;Complément adresse;CP Ville;Ville;Pays;Catégorie du tiers;Nature juridique du tiers;Code propriétaire;Statut propriétaire ou bailleur ?;Civilité;Nom ou Raison sociale;Prénom;N° App / Etage;Entrée / Bâtiment / Immeuble;Numéro + Libellé de la voie;Complément adresse;CP Ville;Ville;Pays;Téléphone;Téléphone 2;Adresse email;Numéro invariant fiscal;Année de construction du logement;Code Rivoli;Numéro de parcelle;Mode de règlement;Date de création;RUM;Date de mandat;IBAN;Titulaire du compte;Pays de Vallois : Double saisie;Information obligatoire manquante (orange);Information obligatoire manquante (vert);Format numéro de téléphone;Format email;Format SIRET;Format code postal;Nombre d'habitants élevé\n";
 
 
     // Colonne generee
-    public static final String COLUMN_USAGER_CODEUSAGER = "Code Usager";
+//    public static final String COLUMN_USAGER_CODEUSAGER = "Code Usager";
     // Ces colonnes sont dans le tableau d'entree
-    public static final String COLUMN_PARENTID = "ParentId";
-    public static final String COLUMN_STRUCTURENAME = "StructureName";
-    public static final String COLUMN_RELATIONNAME = "RelationName";
-    public static final String COLUMN_IDENTIFIER = "Identifier";
-    public static final String COLUMN_USERNAME = "UserName";
-    public static final String COLUMN_USERFIRSTNAME = "UserFirstName";
-    public static final String COLUMN_USERLASTNAME = "UserLastName";
-    public static final String COLUMN_SUB_MOB_CREATEDAT = "Sub_Mob_CreatedAt";
-    public static final String COLUMN_SUB_MOB_UPDATEDAT = "Sub_Mob_UpdatedAt";
-    public static final String COLUMN_SUB_WEB_CREATEDAT = "Sub_Web_CreatedAt";
-    public static final String COLUMN_SUB_WEB_UPDATEDAT = "Sub_Web_UpdatedAt";
-    public static final String COLUMN_TASKUSER = "TaskUser";
-    public static final String COLUMN_TASKCLIENT = "TaskClient";
-    public static final String COLUMN_TASKSITE = "TaskSite";
-    public static final String COLUMN_TASKADDRESS = "TaskAddress";
-    public static final String COLUMN_TASKSTATUS = "TaskStatus";
-    public static final String COLUMN_TASKSTARTDATE = "TaskStartDate";
-    public static final String COLUMN_TASKENDDATE = "TaskEndDate";
-    public static final String COLUMN_TASKDESCRIPTION = "TaskDescription";
-    public static final String COLUMN_ENQUETE_ACTIVITEPROFESSIONNELLE = "Enquête de Dotation:ActiviteProfessionnelle, Activité professionnelle";
-    public static final String COLUMN_ENQUETE_RAISONSOCIALE = "Enquête de Dotation:RaisonSociale";
-    public static final String COLUMN_ENQUETE_SIRET = "Enquête de Dotation:SIRET";
-    public static final String COLUMN_ENQUETE_CIVILITECONTACT1 = "Enquête de Dotation:CiviliteContact1, Civilité";
-    public static final String COLUMN_ENQUETE_NOMCONTACT1 = "Enquête de Dotation:NomContact1";
-    public static final String COLUMN_ENQUETE_PRENOMCONTACT1 = "Enquête de Dotation:PrenomContact1";
-    public static final String COLUMN_ENQUETE_TELEPHONE1 = "Enquête de Dotation:Telephone1";
-    public static final String COLUMN_ENQUETE_TELEPHONE2 = "Enquête de Dotation:Telephone2";
-    public static final String COLUMN_ENQUETE_ADRESSEEMAIL = "Enquête de Dotation:AdresseEmail";
+//    public static final String COLUMN_PARENTID = "ParentId";
+//    public static final String COLUMN_STRUCTURENAME = "StructureName";
+//    public static final String COLUMN_RELATIONNAME = "RelationName";
+    public static final String COLUMN_IDENTIFIER = "submissionNumber";
+//    public static final String COLUMN_USERNAME = "UserName";
+//    public static final String COLUMN_USERFIRSTNAME = "UserFirstName";
+//    public static final String COLUMN_USERLASTNAME = "UserLastName";
+//    public static final String COLUMN_SUB_MOB_CREATEDAT = "Sub_Mob_CreatedAt";
+//    public static final String COLUMN_SUB_MOB_UPDATEDAT = "Sub_Mob_UpdatedAt";
+//    public static final String COLUMN_SUB_WEB_CREATEDAT = "Sub_Web_CreatedAt";
+//    public static final String COLUMN_SUB_WEB_UPDATEDAT = "Sub_Web_UpdatedAt";
+//    public static final String COLUMN_TASKUSER = "TaskUser";
+//    public static final String COLUMN_TASKCLIENT = "TaskClient";
+//    public static final String COLUMN_TASKSITE = "TaskSite";
+//    public static final String COLUMN_TASKADDRESS = "TaskAddress";
+//    public static final String COLUMN_TASKSTATUS = "TaskStatus";
+//    public static final String COLUMN_TASKSTARTDATE = "TaskStartDate";
+//    public static final String COLUMN_TASKENDDATE = "TaskEndDate";
+//    public static final String COLUMN_TASKDESCRIPTION = "TaskDescription";
+    public static final String COLUMN_ENQUETE_ACTIVITEPROFESSIONNELLE = "ActiviteProfessionnelle";
+    public static final String COLUMN_ENQUETE_RAISONSOCIALE = "RaisonSociale";
+    public static final String COLUMN_ENQUETE_SIRET = "SIRET";
+    public static final String COLUMN_ENQUETE_CIVILITECONTACT1 = "CiviliteContact1";
+    public static final String COLUMN_ENQUETE_NOMCONTACT1 = "NomContact1";
+    public static final String COLUMN_ENQUETE_PRENOMCONTACT1 = "PrenomContact1";
+    public static final String COLUMN_ENQUETE_TELEPHONE1 = "Telephone1";
+    public static final String COLUMN_ENQUETE_TELEPHONE2 = "Telephone2";
+    public static final String COLUMN_ENQUETE_ADRESSEEMAIL = "AdresseEmail";
     //public static final String COLUMN_ENQUETE_DEUXIEMECONTACT = "Enquête de Dotation:DeuxiemeContact";
-    public static final String COLUMN_ENQUETE_CIVILITECONTACT2 = "Enquête de Dotation:CiviliteContact2, Civilité";
-    public static final String COLUMN_ENQUETE_NOMCONTACT2 = "Enquête de Dotation:NomContact2";
-    public static final String COLUMN_ENQUETE_PRENOMCONTACT2 = "Enquête de Dotation:PrenomContact2";
-    public static final String COLUMN_ENQUETE_PROPRIETAIRELOCATAIRE = "Enquête de Dotation:ProprietaireLocataire, Propriétaire_Locataire";
-    public static final String COLUMN_ENQUETE_NOMBREHABITANTS = "Enquête de Dotation:NombreHabitants";
-    public static final String COLUMN_ENQUETE_NATUREJURIDIQUETIERS = "Enquête de Dotation:NatureJuridiqueCategorieTiers, Nature juridique du tiers";
-    public static final String COLUMN_ENQUETE_CATEGORIETIERS = "Enquête de Dotation:NatureJuridiqueCategorieTiers, Catégorie du tiers";
-    public static final String COLUMN_ENQUETE_COMMENTAIRES = "Enquête de Dotation:Commentaires";
-    public static final String COLUMN_ENQUETE_STATUTPOUB = "Enquête de Dotation:StatutPouB, Statut propriétaire ou bailleur";
-    public static final String COLUMN_ENQUETE_CIVILITEPOUB = "Enquête de Dotation:CivilitePouB, Civilité";
-    public static final String COLUMN_ENQUETE_NOMRAISONSOCIALEPOUB = "Enquête de Dotation:NomRaisonSocialePouB";
-    public static final String COLUMN_ENQUETE_PRENOMPOUB = "Enquête de Dotation:PrenomPouB";
-    public static final String COLUMN_ENQUETE_NUMAPPETAGEPOUB = "Enquête de Dotation:NumAppEtagePouB";
-    public static final String COLUMN_ENQUETE_ENTREEBATIMENTIMMEUBLEPOUB = "Enquête de Dotation:EntreeBatimentImmeublePouB";
-    public static final String COLUMN_ENQUETE_NUMEROLIBELLEVOIEPOUB = "Enquête de Dotation:NumeroLibelleVoiePouB";
-    public static final String COLUMN_ENQUETE_COMPLEMENTADRESSEPOUB = "Enquête de Dotation:ComplementAdressePouB";
+    public static final String COLUMN_ENQUETE_CIVILITECONTACT2 = "CiviliteContact2";
+    public static final String COLUMN_ENQUETE_NOMCONTACT2 = "NomContact2";
+    public static final String COLUMN_ENQUETE_PRENOMCONTACT2 = "PrenomContact2";
+    public static final String COLUMN_ENQUETE_PROPRIETAIRELOCATAIRE = "ProprietaireLocataire";
+    public static final String COLUMN_ENQUETE_NOMBREHABITANTS = "NombreHabitants";
+    public static final String COLUMN_ENQUETE_NATUREJURIDIQUETIERS = "listItemNatureJuridique";
+    public static final String COLUMN_ENQUETE_CATEGORIETIERS = "listItemCategorieTiers";
+    public static final String COLUMN_ENQUETE_COMMENTAIRES = "Commentaires";
+    public static final String COLUMN_ENQUETE_STATUTPOUB = "StatutPouB";
+    public static final String COLUMN_ENQUETE_CIVILITEPOUB = "CivilitePouB";
+    public static final String COLUMN_ENQUETE_NOMRAISONSOCIALEPOUB = "NomRaisonSocialePouB";
+    public static final String COLUMN_ENQUETE_PRENOMPOUB = "PrenomPouB";
+    public static final String COLUMN_ENQUETE_NUMAPPETAGEPOUB = "NumAppEtagePouB";
+    public static final String COLUMN_ENQUETE_ENTREEBATIMENTIMMEUBLEPOUB = "EntreeBatimentImmeublePouB";
+    public static final String COLUMN_ENQUETE_NUMEROLIBELLEVOIEPOUB = "NumeroLibelleVoiePouB";
+    public static final String COLUMN_ENQUETE_COMPLEMENTADRESSEPOUB = "ComplementAdressePouB";
     //public static final String COLUMN_ENQUETE_FRANCEPOUB = "Enquête de Dotation:FrancePouB";
-    public static final String COLUMN_ENQUETE_CPVILLEFRANCEPOUB1 = "Enquête de Dotation:CPVilleFrancePouB, Lvl 1";
-    public static final String COLUMN_ENQUETE_CPVILLEFRANCEPOUB2 = "Enquête de Dotation:CPVilleFrancePouB, Lvl 2";
-    public static final String COLUMN_ENQUETE_CPHORSFRANCEPOUB = "Enquête de Dotation:CPHorsFrancePouB";
-    public static final String COLUMN_ENQUETE_VILLEHORSFRANCEPOUB = "Enquête de Dotation:VilleHorsFrancePouB";
-    public static final String COLUMN_ENQUETE_PAYSHORSFRANCEPOUB = "Enquête de Dotation:PaysHorsFrancePouB, Pays";
-    public static final String COLUMN_ENQUETE_TELEPHONE1POUB = "Enquête de Dotation:Telephone1PouB";
-    public static final String COLUMN_ENQUETE_TELEPHONE2POUB = "Enquête de Dotation:Telephone2PouB";
-    public static final String COLUMN_ENQUETE_ADRESSEEMAILPOUB = "Enquête de Dotation:AdresseEmailPouB";
-    public static final String COLUMN_ENQUETE_DATEEMMENAGEMENT = "Enquête de Dotation:DateEmmenagement";
-    public static final String COLUMN_ENQUETE_NUMVOIEEXTENSION = "Enquête de Dotation:NumVoieExtension";
-    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTVILLE = "Enquête de Dotation:AdresseEmplacement, VILLE";
-    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTCP = "Enquête de Dotation:AdresseEmplacement, CP";
-    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTTYPE = "Enquête de Dotation:AdresseEmplacement, TYPE DE VOIE";
-    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTARTICLE = "Enquête de Dotation:AdresseEmplacement, ARTICLE DE LA VOIE";
-    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTNOM = "Enquête de Dotation:AdresseEmplacement, NOM DE LA VOIE";
-    public static final String COLUMN_ENQUETE_RESIDENCEPRINCIPALESECONDAIRE = "Enquête de Dotation:ResidencePrincipaleSecondaire, Résidence principale ou secondaire";
-    public static final String COLUMN_ENQUETE_FACTURATIONADRESSE = "Enquête de Dotation:FacturationAdresse";
-    public static final String COLUMN_ENQUETE_NOMCOMPLETRAISONSOCIALE = "Enquête de Dotation:NomCompletRaisonSociale";
-    public static final String COLUMN_ENQUETE_NUMAPPETAGE = "Enquête de Dotation:NumAppEtage";
-    public static final String COLUMN_ENQUETE_ENTREEBATIMENTIMMEUBLE = "Enquête de Dotation:EntreeBatimentImmeuble";
-    public static final String COLUMN_ENQUETE_NUMEROLIBELLEVOIE = "Enquête de Dotation:NumeroLibelleVoie";
-    public static final String COLUMN_ENQUETE_COMPLEMENTADRESSE = "Enquête de Dotation:ComplementAdresse";
+    public static final String COLUMN_ENQUETE_CPFRANCEPOUB = "listItemCodePostalPouB";
+    public static final String COLUMN_ENQUETE_VILLEFRANCEPOUB = "listItemVillePouB";
+    public static final String COLUMN_ENQUETE_CPHORSFRANCEPOUB = "CPHorsFrancePouB";
+    public static final String COLUMN_ENQUETE_VILLEHORSFRANCEPOUB = "VilleHorsFrancePouB";
+    public static final String COLUMN_ENQUETE_PAYSHORSFRANCEPOUB = "PaysHorsFrancePouB";
+    public static final String COLUMN_ENQUETE_TELEPHONE1POUB = "Telephone1PouB";
+    public static final String COLUMN_ENQUETE_TELEPHONE2POUB = "Telephone2PouB";
+    public static final String COLUMN_ENQUETE_ADRESSEEMAILPOUB = "AdresseEmailPouB";
+    public static final String COLUMN_ENQUETE_DATEEMMENAGEMENT = "DateEmmenagement";
+    public static final String COLUMN_ENQUETE_NUMVOIEEXTENSION = "NumVoieExtension";
+    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTVILLE = "listItemVilleEmplacement";
+    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTCP = "listItemCodePostalEmplacement";
+    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTTYPE = "listItemTypeVoieEmplacement";
+    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTARTICLE = "listItemArticleVoie";
+    public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTNOM = "listItemNomVoieEmplacement";
+    public static final String COLUMN_ENQUETE_RESIDENCEPRINCIPALESECONDAIRE = "ResidencePrincipaleSecondaire";
+    public static final String COLUMN_ENQUETE_FACTURATIONAUTREADRESSE = "FacturationAutreAdresse";
+    public static final String COLUMN_ENQUETE_NOMCOMPLETRAISONSOCIALE = "NomCompletRaisonSociale";
+    public static final String COLUMN_ENQUETE_NUMAPPETAGE = "NumAppEtage";
+    public static final String COLUMN_ENQUETE_ENTREEBATIMENTIMMEUBLE = "EntreeBatimentImmeuble";
+    public static final String COLUMN_ENQUETE_NUMEROLIBELLEVOIE = "NumeroLibelleVoie";
+    public static final String COLUMN_ENQUETE_COMPLEMENTADRESSE = "ComplementAdresse";
     //public static final String COLUMN_ENQUETE_FRANCEFACTURATION = "Enquête de Dotation:FranceFacturation";
-    public static final String COLUMN_ENQUETE_CPVILLEFRANCEFACTURATION1 = "Enquête de Dotation:CPVilleFranceFacturation, Lvl 1";
-    public static final String COLUMN_ENQUETE_CPVILLEFRANCEFACTURATION2 = "Enquête de Dotation:CPVilleFranceFacturation, Lvl 2";
-    public static final String COLUMN_ENQUETE_CPHORSFRANCEFACTURATION = "Enquête de Dotation:CPHorsFranceFacturation";
-    public static final String COLUMN_ENQUETE_VILLEHORSFRANCEFACTURATION = "Enquête de Dotation:VilleHorsFranceFacturation";
-    public static final String COLUMN_ENQUETE_PAYSHORSFRANCEFACTURATION = "Enquête de Dotation:PaysHorsFranceFacturation, Pays";
+    public static final String COLUMN_ENQUETE_CPFRANCEFACTURATION = "listItemCodePostalFacturation";
+    public static final String COLUMN_ENQUETE_VILLEFRANCEFACTURATION = "listItemVilleFacturation";
+    public static final String COLUMN_ENQUETE_CPHORSFRANCEFACTURATION = "CPHorsFranceFacturation";
+    public static final String COLUMN_ENQUETE_VILLEHORSFRANCEFACTURATION = "VilleHorsFranceFacturation";
+    public static final String COLUMN_ENQUETE_PAYSHORSFRANCEFACTURATION = "PaysHorsFranceFacturation";
     //public static final String COLUMN_ENQUETE_ATTRIBUTIONCARTE = "Enquête de Dotation:AttributionCarte";
-    public static final String COLUMN_ENQUETE_TYPECARTE = "Enquête de Dotation:Type, Type de carte";
-    public static final String COLUMN_ENQUETE_NUMCARTE = "Enquête de Dotation:NumCarte";
-    public static final String COLUMN_ENQUETE_DATEATTRIBUTIONCARTE = "Enquête de Dotation:DateAttributionCarte";
+    public static final String COLUMN_ENQUETE_TYPECARTE = "Type";
+    public static final String COLUMN_ENQUETE_NUMCARTE = "NumCarte";
+    public static final String COLUMN_ENQUETE_DATEATTRIBUTIONCARTE = "DateAttributionCarte";
     //public static final String COLUMN_ENQUETE_TEOMI = "Enquête de Dotation:TEOMI";
-    public static final String COLUMN_ENQUETE_MOTIFDISTRIBUTIONCARTE = "Enquête de Dotation:MotifDistribution, Motif de distribution";
-    public static final String COLUMN_ENQUETE_NUMINVARIANTFISCAL = "Enquête de Dotation:NumInvariantFiscal";
-    public static final String COLUMN_ENQUETE_ANNEECONSTRUCTION = "Enquête de Dotation:AnneeConstruction";
-    public static final String COLUMN_ENQUETE_CODERIVOLI = "Enquête de Dotation:CodeRivoli";
-    public static final String COLUMN_ENQUETE_NUMEROPARCELLE = "Enquête de Dotation:NumeroParcelle";
-    public static final String COLUMN_ENQUETE_CIVILITENONPARTICULIER = "Enquête de Dotation:CiviliteNonParticulier, Civilité";
-    public static final String COLUMN_ENQUETE_NOMNONPARTICULIER = "Enquête de Dotation:NomNonParticulier";
-    public static final String COLUMN_ENQUETE_PRENOMNONPARTICULIER = "Enquête de Dotation:PrenomNonParticulier";
+    public static final String COLUMN_ENQUETE_MOTIFDISTRIBUTIONCARTE = "MotifDistribution";
+    public static final String COLUMN_ENQUETE_NUMINVARIANTFISCAL = "NumInvariantFiscal";
+    public static final String COLUMN_ENQUETE_ANNEECONSTRUCTION = "AnneeConstruction";
+    public static final String COLUMN_ENQUETE_CODERIVOLI = "CodeRivoli";
+    public static final String COLUMN_ENQUETE_NUMEROPARCELLE = "NumeroParcelle";
+//    public static final String COLUMN_ENQUETE_CIVILITENONPARTICULIER = "Enquête de Dotation:CiviliteNonParticulier, Civilité";
+//    public static final String COLUMN_ENQUETE_NOMNONPARTICULIER = "Enquête de Dotation:NomNonParticulier";
+//    public static final String COLUMN_ENQUETE_PRENOMNONPARTICULIER = "Enquête de Dotation:PrenomNonParticulier";
     public static final String COLUMN_ENQUETE_CONTENEUR_DATEDISTRIBUTIONBAC = "Enquête de Dotation_CONTENEURISATION:DateDistributionBac";
-    public static final String COLUMN_ENQUETE_CONTENEUR_FLUXMATIERE = "Enquête de Dotation_CONTENEURISATION:FluxMatiere, Flux_Matière";
-    public static final String COLUMN_ENQUETE_CONTENEUR_VOLUMEBAC = "Enquête de Dotation_CONTENEURISATION:VolumeBac, ENQUETE - Volume bac (L)";
-    public static final String COLUMN_ENQUETE_CONTENEUR_SERRURE = "Enquête de Dotation_CONTENEURISATION:Serrure";
-    public static final String COLUMN_ENQUETE_CONTENEUR_FOURNISSEUR = "Enquête de Dotation_CONTENEURISATION:Fournisseur, Fournisseur";
-    public static final String COLUMN_ENQUETE_CONTENEUR_NUMPUCE = "Enquête de Dotation_CONTENEURISATION:NumPuce";
-    public static final String COLUMN_ENQUETE_CONTENEUR_NUMCUVE = "Enquête de Dotation_CONTENEURISATION:NumCuve";
-    public static final String COLUMN_ENQUETE_CONTENEUR_NUMCAB = "Enquête de Dotation_CONTENEURISATION:NumCAB";
+    public static final String COLUMN_ENQUETE_CONTENEUR_FLUXMATIERE = "FluxMatiere";
+    public static final String COLUMN_ENQUETE_CONTENEUR_VOLUMEBAC = "VolumeBac";
+    public static final String COLUMN_ENQUETE_CONTENEUR_SERRURE = "Serrure";
+    public static final String COLUMN_ENQUETE_CONTENEUR_FOURNISSEUR = "Fournisseur";
+    public static final String COLUMN_ENQUETE_CONTENEUR_NUMPUCE = "NumPuce";
+    public static final String COLUMN_ENQUETE_CONTENEUR_NUMCUVE = "NumCuve";
+    public static final String COLUMN_ENQUETE_CONTENEUR_NUMCAB = "NumCAB";
+    public static final String COLUMN_ENQUETE_CONTENEUR_UPDATEMAIL = "UpdateUser.Email";
 
 
     //Fichier Mapping
@@ -201,7 +202,9 @@ public abstract class HeaderUtils {
      * @param row the input row
      * @return
      */
-    public static Map<String, Integer> mapHeaders(String row) {
+
+    //TODO Should disappear
+    /*public static Map<String, Integer> mapHeaders(String row) {
         // Split row
         Map<String, Integer> headers = new HashMap<>();
 
@@ -214,7 +217,7 @@ public abstract class HeaderUtils {
             throw new UnsupportedFileException();
         }
         return headers;
-    }
+    }*/
 
     public static void resetCodeUsager() {
         CODEUSAGER = 0;

@@ -1,10 +1,12 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Objects;
+
 import static parser.util.Statistics.nbConteneurs;
 
 public class Conteneur {
-    private int conteneurInternalId;
+    private String identifier;
     private boolean filled = false;
     private LocalDate dateDistribution;
     private String fluxOuMatiere;
@@ -15,12 +17,12 @@ public class Conteneur {
     private String numeroCuve;
     private String numeroCab;
 
-    public int getConteneurInternalId() {
-        return conteneurInternalId;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setConteneurInternalId(int conteneurInternalId) {
-        this.conteneurInternalId = conteneurInternalId;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public boolean isFilled() {
@@ -99,16 +101,11 @@ public class Conteneur {
         if (numeroCab.length() > 0) this.filled = true; //Only for Pays de Valois
     }
 
-    public Conteneur(boolean isCounted) {
-        if (isCounted) {
-            this.conteneurInternalId = ++nbConteneurs; //Only for Pays de Valois
-        }
-    }
-
     @Override
     public String toString() {
         return "Conteneur{" +
-                "conteneurInternalId=" + conteneurInternalId +
+                "identifier='" + identifier + '\'' +
+                ", filled=" + filled +
                 ", dateDistribution=" + dateDistribution +
                 ", fluxOuMatiere='" + fluxOuMatiere + '\'' +
                 ", volumeBac='" + volumeBac + '\'' +
@@ -124,34 +121,30 @@ public class Conteneur {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Conteneur conteneur = (Conteneur) o;
-
-        if (conteneurInternalId != conteneur.conteneurInternalId) return false;
-        if (dateDistribution != null ? !dateDistribution.equals(conteneur.dateDistribution) : conteneur.dateDistribution != null)
-            return false;
-        if (fluxOuMatiere != null ? !fluxOuMatiere.equals(conteneur.fluxOuMatiere) : conteneur.fluxOuMatiere != null)
-            return false;
-        if (volumeBac != null ? !volumeBac.equals(conteneur.volumeBac) : conteneur.volumeBac != null) return false;
-        if (serrure != null ? !serrure.equals(conteneur.serrure) : conteneur.serrure != null) return false;
-        if (fournisseur != null ? !fournisseur.equals(conteneur.fournisseur) : conteneur.fournisseur != null)
-            return false;
-        if (numeroPuce != null ? !numeroPuce.equals(conteneur.numeroPuce) : conteneur.numeroPuce != null) return false;
-        if (numeroCuve != null ? !numeroCuve.equals(conteneur.numeroCuve) : conteneur.numeroCuve != null) return false;
-        return numeroCab != null ? numeroCab.equals(conteneur.numeroCab) : conteneur.numeroCab == null;
+        return filled == conteneur.filled &&
+                Objects.equals(identifier, conteneur.identifier) &&
+                Objects.equals(dateDistribution, conteneur.dateDistribution) &&
+                Objects.equals(fluxOuMatiere, conteneur.fluxOuMatiere) &&
+                Objects.equals(volumeBac, conteneur.volumeBac) &&
+                Objects.equals(serrure, conteneur.serrure) &&
+                Objects.equals(fournisseur, conteneur.fournisseur) &&
+                Objects.equals(numeroPuce, conteneur.numeroPuce) &&
+                Objects.equals(numeroCuve, conteneur.numeroCuve) &&
+                Objects.equals(numeroCab, conteneur.numeroCab);
     }
 
     @Override
     public int hashCode() {
-        int result = conteneurInternalId;
-        result = 31 * result + (dateDistribution != null ? dateDistribution.hashCode() : 0);
-        result = 31 * result + (fluxOuMatiere != null ? fluxOuMatiere.hashCode() : 0);
-        result = 31 * result + (volumeBac != null ? volumeBac.hashCode() : 0);
-        result = 31 * result + (serrure != null ? serrure.hashCode() : 0);
-        result = 31 * result + (fournisseur != null ? fournisseur.hashCode() : 0);
-        result = 31 * result + (numeroPuce != null ? numeroPuce.hashCode() : 0);
-        result = 31 * result + (numeroCuve != null ? numeroCuve.hashCode() : 0);
-        result = 31 * result + (numeroCab != null ? numeroCab.hashCode() : 0);
-        return result;
+        return Objects.hash(identifier, filled, dateDistribution, fluxOuMatiere, volumeBac, serrure, fournisseur, numeroPuce, numeroCuve, numeroCab);
     }
+
+
+    /* Is not supposed to exist
+    public Conteneur(boolean isCounted) {
+        if (isCounted) {
+            this.conteneurInternalId = ++nbConteneurs; //Only for Pays de Valois
+        }
+    }*/
+
 }

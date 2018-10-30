@@ -17,8 +17,7 @@ import parser.DataWrapper;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import static parser.util.StringUtils.CSVREGEX;
-import static parser.util.StringUtils.savePath;
+import static parser.util.StringUtils.*;
 import static ui.UiUtils.*;
 
 public class EnqueteToPivotController {
@@ -39,15 +38,21 @@ public class EnqueteToPivotController {
     public void initialize() {
         loadBtn.setOnAction(event -> {
             try {
+                boolean isDaxium = false;
+                boolean isFantoir = false;
                 // Show file chooser (blocking)
                 FileChooser openFileWindow = new FileChooser();
                 // Wait for file
-                File csvFile = openFileWindow.showOpenDialog(((Node)event.getTarget()).getScene().getWindow());
-                if (csvFile == null) {
+                File f = openFileWindow.showOpenDialog(((Node)event.getTarget()).getScene().getWindow());
+                if (f == null) {
                     //TODO not sure if user has to be notified here
                     //warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
                     return; // Need to exit here
-                } else if (!(csvFile.getPath().toLowerCase().matches(CSVREGEX))) {
+                } else if ((f.getPath().toLowerCase().matches(XLSXREGEX))) {
+                    isDaxium = true;
+                } else if ((f.getPath().toLowerCase().matches(TXTREGEX))) {
+                    isFantoir = true;
+                } else {
                     warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT);
                     return; // Need to exit here
                 }
@@ -56,22 +61,28 @@ public class EnqueteToPivotController {
                 showProgressBar();
                 disableButton();
                 
-                // Then begin loading process
-                loadAndParseCsvFile(csvFile);
+                // Then begin loading process, depending on file nature
+                if (isDaxium) {
+                    loadAndParseDaxiumFile(f);
+                } else if (isFantoir) {
+                    //TODO Fantoir
+                } else {
+                    //TODO Erreur
+                }
 
             } catch (Exception e) {
-                warnUser("Erreur fatale", "Veuillez transmettre cette erreur à l'équipe RIVP :", e.getMessage());
+                warnUser("Erreur fatale", "Veuillez transmettre cette erreur à l'équipe RIVP :", e.getStackTrace().toString());
             }
 
         });
     }
     
     private void showProgressBar() {
-      progressBarVBox.setVisible(true);
+        progressBarVBox.setVisible(true);
     }
     
     private void hideProgressBar() {
-      progressBarVBox.setVisible(false);
+        progressBarVBox.setVisible(false);
     }
 
     private void disableButton() {
@@ -88,7 +99,7 @@ public class EnqueteToPivotController {
       progressValue.setText(String.valueOf(progressPercent) + " %");
     }
     
-    private void loadAndParseCsvFile(File csvFile) {
+    private void loadAndParseDaxiumFile(File csvFile) {
       // THIS CODE IS CALLED FROM MAIN THREAD
       
       // 1: Create Load CSV Task
@@ -172,6 +183,11 @@ public class EnqueteToPivotController {
 
         progressMessage.setText("Sauvegarde du fichier pivot");
 
+        //TODO what happens if CANCEL
+        if (output == null) {
+
+        }
+
         WriteTask writeTask = WriteTask.create(output, data);
         writeTask.progressProperty().addListener((observable, oldValue, newValue) -> {
             updateProgress(newValue);
@@ -187,6 +203,7 @@ public class EnqueteToPivotController {
             hideProgressBar();
       });
       writeTask.setOnFailed(e -> {
+          System.out.println("writetask failed");
         if (writeTask.getException() instanceof IllegalStateException) {
             adviseUser(SAVEFILETITLE, SAVEFILEHEADER, SAVEFILECONTENT);
         }

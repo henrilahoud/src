@@ -23,7 +23,7 @@ public class WriteTask extends Task<Void> {
     
     @Override
     public Void call() {
-        CsvWriter writer = new CsvWriter(output, wrapper.getEmplacements(), (progress) -> {
+        CsvWriter writer = new CsvWriter(output, wrapper, (progress) -> {
             updateProgress(progress, 100);
         });
         writer.write();
