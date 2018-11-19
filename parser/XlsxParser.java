@@ -6,6 +6,7 @@ import model.Emplacement;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import parser.GenericParser;
@@ -19,9 +20,10 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_NULL_AND_BLANK;
+
 public class XlsxParser implements GenericParser <DataWrapper,File> {
     private XSSFWorkbook xlsx;
-    private int totalNbOfLines;
 
     private Consumer<Integer> onProgressUpdateListener;
 
@@ -37,105 +39,130 @@ public class XlsxParser implements GenericParser <DataWrapper,File> {
 
     @Override
     public DataWrapper parse (File f) throws Exception {
-
-        // Finds the workbook instance for XLSX file and fetch all the headers
-        xlsx = new XSSFWorkbook(f);
-
-        if (xlsx.getNumberOfSheets() != 4) {
-            throw new IllegalStateException("Le fichier Excel n'est pas au bon format");
-        }
-
-        Map<String, Integer> emplacementHeaders = null;
-        Map<String, Integer> distribHeaders = null;
-        Map<String, Integer> inventaireHeaders = null;
-        Map<String, String> lookup = null;
-
         Map<String, Emplacement> emplacements = new HashMap<>(); // Each Emplacement parsed will be added to this Map, having for key the ID given by Daxium
         Map<String, Conteneur> conteneurs = new HashMap<>(); // Same
-
-        XSSFSheet emplacementsSheet = xlsx.getSheetAt(0);
-        XSSFSheet distribSheet = xlsx.getSheetAt(1);
-        XSSFSheet inventaireSheet = xlsx.getSheetAt(2);
-
-        int totalNbOfRows = emplacementsSheet.getPhysicalNumberOfRows() + distribSheet.getPhysicalNumberOfRows() + inventaireSheet.getPhysicalNumberOfRows();
-
-        // First, map headers, they will be injected into the Parsers to bind the Data with the correct attributes of Emplacement and Conteneur
-        emplacementHeaders = fetchHeaders(xlsx, 0);
-        distribHeaders = fetchHeaders(xlsx, 1);
-        inventaireHeaders = fetchHeaders(xlsx, 2);
-        lookup = fetchLookup(xlsx);
 
         // Will process every emplacement and run check ups on the data to see if correctly entered
         ErrorHandler error = new ErrorHandler();
 
-        /* Now, fetch the Emplacement and the Conteneur :
-           Model : <ID, Emplacement>
-                   <ID, Conteneur>
-                   <ID, ID> to bind them
-        */
-        for (int ri = 1 ; ri < emplacementsSheet.getPhysicalNumberOfRows() ; ri++) { //Starts at 1 to avoid taking the headers into account
-            Row row = emplacementsSheet.getRow(ri);
-            Iterator <Cell> i = row.cellIterator();
-            ArrayList<String> rowArray = new ArrayList<>();
+        try {
+            // Finds the workbook instance for XLSX file and fetch all the headers
+            xlsx = new XSSFWorkbook(f);
 
-            while (i.hasNext()) {
-                rowArray.add(StringUtils.XlsxStringValue(i.next()));
+            if (xlsx.getNumberOfSheets() != 4) {
+                throw new IllegalStateException("Le fichier Excel n'est pas au bon format");
             }
 
-            EmplacementParser ep = new EmplacementParser(emplacementHeaders);
-            Emplacement e = ep.parse(rowArray);
+            Map<String, Integer> emplacementHeaders;
+            Map<String, Integer> distribHeaders;
+            Map<String, Integer> inventaireHeaders;
+            Map<String, String> lookup;
 
-            emplacements.put(e.getIdentifier(),e);
-        }
+            XSSFSheet emplacementsSheet = xlsx.getSheetAt(0);
+            XSSFSheet distribSheet = xlsx.getSheetAt(1);
+            XSSFSheet inventaireSheet = xlsx.getSheetAt(2);
+            XSSFSheet lookUpSheet = xlsx.getSheetAt(3);
 
-        // Emplacements have been made, now fetch all the Conteneurs (those distributed, second sheet)
-        for (int ri = 1 ; ri < distribSheet.getPhysicalNumberOfRows() ; ri++) { //Starts at 1 to avoid taking the headers into account
-            Row row = distribSheet.getRow(ri);
-            Iterator <Cell> i = row.cellIterator();
-            ArrayList<String> rowArray = new ArrayList<>();
+            int totalNbOfRows = emplacementsSheet.getPhysicalNumberOfRows() + distribSheet.getPhysicalNumberOfRows() + inventaireSheet.getPhysicalNumberOfRows() + lookUpSheet.getPhysicalNumberOfRows();
+            int progressCounter = 0;
 
-            while (i.hasNext()) {
-                rowArray.add(StringUtils.XlsxStringValue(i.next()));
-            }
+            int nbEmplacements = 0;
+            int nbConteneurs = 0;
 
-            ConteneurParser cp = new ConteneurParser(distribHeaders);
-            Conteneur c = cp.parse(rowArray);
+            // First, map headers, they will be injected into the Parsers to bind the Data with the correct attributes of Emplacement and Conteneur
+            emplacementHeaders = fetchHeaders(xlsx, 0);
+            distribHeaders = fetchHeaders(xlsx, 1);
+            inventaireHeaders = fetchHeaders(xlsx, 2);
+            lookup = fetchLookup(xlsx);
 
-            conteneurs.put(c.getIdentifier(),c);
-        }
 
-        // Emplacements have been made, now fetch all the Conteneurs (those in the inventaire AND containing Puce numbers, third sheet)
-        for (int ri = 1 ; ri < inventaireSheet.getPhysicalNumberOfRows() ; ri++) { //Starts at 1 to avoid taking the headers into account
-            Row row = inventaireSheet.getRow(ri);
-            Iterator <Cell> i = row.cellIterator();
-            ArrayList<String> rowArray = new ArrayList<>();
+            /* Now, fetch the Emplacement and the Conteneur :
+               Model : <ID, Emplacement>
+                       <ID, Conteneur>
+                       <ID, ID> to bind them
+            */
+            for (int ri = 1; ri < emplacementsSheet.getPhysicalNumberOfRows(); ri++) { //Starts at 1 to avoid taking the headers into account
+                XSSFRow row = emplacementsSheet.getRow(ri);
+                ArrayList<String> rowArray = new ArrayList<>();
 
-            while (i.hasNext()) {
-                rowArray.add(StringUtils.XlsxStringValue(i.next()));
-            }
-
-            ConteneurParser cp = new ConteneurParser(inventaireHeaders);
-            Conteneur c = cp.parse(rowArray);
-
-            if (!(c.getNumeroCuve().isEmpty() && c.getNumeroPuce().isEmpty() && c.getNumeroCab().isEmpty())) {
-                conteneurs.put(c.getIdentifier(),c);
-            }
-        }
-
-        // Emplacements and Conteneurs have been extracted, now bind them
-        for (String key : lookup.keySet()) {
-            try {
-                if (conteneurs.containsKey(key)) {
-                    emplacements.get(lookup.get(key)).getConteneurs().add(conteneurs.get(key)); // Fetching the emplacement with ID = value associated to "key" and adding conteneur with ID "key" to it
-                    error.process(emplacements.get(lookup.get(key)));
+                for (int i = 0; i < emplacementHeaders.size(); i++) {
+                    if (row.getCell(i,RETURN_NULL_AND_BLANK) == null) {
+                        rowArray.add("");
+                    } else {
+                        rowArray.add(StringUtils.XlsxStringValue(row.getCell(i,RETURN_NULL_AND_BLANK)));
+                    }
                 }
-            } catch (Exception e) {
-                throw e;
+
+                EmplacementParser ep = new EmplacementParser(emplacementHeaders);
+                Emplacement e = ep.parse(rowArray);
+
+                emplacements.put(e.getIdentifier(), e);
+                updateProgress(++progressCounter * 100 / totalNbOfRows);
+                nbEmplacements++;
             }
 
+            // Emplacements have been made, now fetch all the Conteneurs (those distributed, second sheet)
+            for (int ri = 1; ri < distribSheet.getPhysicalNumberOfRows(); ri++) { //Starts at 1 to avoid taking the headers into account
+                Row row = distribSheet.getRow(ri);
+                ArrayList<String> rowArray = new ArrayList<>();
+
+                for (int i = 0; i < distribHeaders.size(); i++) {
+                    if (row.getCell(i,RETURN_NULL_AND_BLANK) == null) {
+                        rowArray.add("");
+                    } else {
+                        rowArray.add(StringUtils.XlsxStringValue(row.getCell(i,RETURN_NULL_AND_BLANK)));
+                    }
+                }
+
+                ConteneurParser cp = new ConteneurParser(distribHeaders);
+                Conteneur c = cp.parse(rowArray);
+
+                conteneurs.put(c.getIdentifier(), c);
+                updateProgress(++progressCounter * 100 / totalNbOfRows);
+                nbConteneurs++;
+            }
+
+            // Emplacements have been made, now fetch all the Conteneurs (those in the inventaire AND containing Puce numbers, third sheet)
+            for (int ri = 1; ri < inventaireSheet.getPhysicalNumberOfRows(); ri++) { //Starts at 1 to avoid taking the headers into account
+                Row row = inventaireSheet.getRow(ri);
+                ArrayList<String> rowArray = new ArrayList<>();
+
+                for (int i = 0; i < inventaireHeaders.size(); i++) {
+                    if (row.getCell(i,RETURN_NULL_AND_BLANK) == null) {
+                        rowArray.add("");
+                    } else {
+                        rowArray.add(StringUtils.XlsxStringValue(row.getCell(i,RETURN_NULL_AND_BLANK)));
+                    }
+                }
+
+                ConteneurParser cp = new ConteneurParser(inventaireHeaders);
+                Conteneur c = cp.parse(rowArray);
+
+                if (!(c.getNumeroCuve().isEmpty() && c.getNumeroPuce().isEmpty() && c.getNumeroCab().isEmpty())) {
+                    conteneurs.put(c.getIdentifier(), c);
+                    nbConteneurs++;
+                }
+                updateProgress(++progressCounter * 100 / totalNbOfRows);
+            }
+
+            // Emplacements and Conteneurs have been extracted, now bind them
+            for (String key : lookup.keySet()) {
+                try {
+                    if (conteneurs.containsKey(key)) {
+                        emplacements.get(lookup.get(key)).getConteneurs().add(conteneurs.get(key)); // Fetching the emplacement with ID = value associated to "key" and adding conteneur with ID "key" to it
+                        error.process(emplacements.get(lookup.get(key)));
+                        updateProgress(++progressCounter * 100 / totalNbOfRows);
+                    }
+                } catch (Exception e) {
+                    throw e;
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getStackTrace().toString());
         }
 
-        return new DataWrapper(new ArrayList<>(emplacements.values()),0,0, error);
+        return new DataWrapper(new ArrayList<>(emplacements.values()), emplacements.size(), conteneurs.size(), error);
     }
 
     private Map<String, Integer> fetchHeaders(XSSFWorkbook xlsx, int sheetPosition) {

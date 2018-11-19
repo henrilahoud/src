@@ -32,7 +32,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Générateur de fichier pivot");
         primaryStage.setResizable(false);
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 300, 358));
 
         primaryStage.show();
     }

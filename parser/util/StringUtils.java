@@ -96,7 +96,8 @@ public abstract class StringUtils {
             case BLANK:
                 return DEFAULTVALUE;
             default:
-                throw new InvalidStateException("Valeur de cellule invalide :\n" + cell.toString());
+                return "ERREUR";
+                //TODO throw new InvalidStateException("Valeur de cellule invalide :\n" + cell.toString());
         }
 
     }

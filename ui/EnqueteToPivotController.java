@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -33,25 +35,45 @@ public class EnqueteToPivotController {
     private GridPane gridPane;
     @FXML
     private Button loadBtn;
+    @FXML
+    private RadioButton daxiumRb;
+    @FXML
+    private RadioButton banRb;
+    @FXML
+    private RadioButton fantoirRb;
+    @FXML
+    private ToggleGroup fileType;
     
     @FXML
     public void initialize() {
         loadBtn.setOnAction(event -> {
             try {
-                boolean isDaxium = false;
-                boolean isFantoir = false;
+                //TODO take radio buttons into account to determine filetype
+                boolean isDaxium = daxiumRb.isSelected();
+                boolean isFantoir = fantoirRb.isSelected();
+                boolean isBan = banRb.isSelected();
+
                 // Show file chooser (blocking)
                 FileChooser openFileWindow = new FileChooser();
                 // Wait for file
                 File f = openFileWindow.showOpenDialog(((Node)event.getTarget()).getScene().getWindow());
                 if (f == null) {
-                    //TODO not sure if user has to be notified here
-                    //warnUser(ERRORTITLE, NODATAHEADER, NODATACONTENT);
                     return; // Need to exit here
-                } else if ((f.getPath().toLowerCase().matches(XLSXREGEX))) {
-                    isDaxium = true;
-                } else if ((f.getPath().toLowerCase().matches(TXTREGEX))) {
-                    isFantoir = true;
+                } else if (isDaxium) {
+                    if (!(f.getPath().toLowerCase().matches(XLSXREGEX))) {
+                        warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT);
+                        return; // Need to exit here
+                    }
+                } else if (isFantoir) {
+                    if (!(f.getPath().toLowerCase().matches(TXTREGEX))) {
+                        warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT);
+                        return; // Need to exit here
+                    }
+                } else if (isBan) {
+                    if (!(f.getPath().toLowerCase().matches(CSVREGEX))) {
+                        warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT);
+                        return; // Need to exit here
+                    }
                 } else {
                     warnUser(ERRORTITLE, WRONGTYPEHEADER, WRONGTYPECONTENT);
                     return; // Need to exit here
@@ -66,7 +88,7 @@ public class EnqueteToPivotController {
                     loadAndParseDaxiumFile(f);
                 } else if (isFantoir) {
                     //TODO Fantoir
-                } else {
+                } else if (isBan) {
                     //TODO Erreur
                 }
 
