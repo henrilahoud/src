@@ -174,7 +174,7 @@ public abstract class DataChecker {
         }
 
         for (String n : nums) {
-            if ((n.length() != 0) && (n.length() != 10)) {
+            if ((n.length() != 0) && (n.length() != 17)) {
                 return true;
             }
         }
@@ -210,10 +210,10 @@ public abstract class DataChecker {
     }
 
     private static boolean checkCharNb(String s, int n) {
-        if (s.length() == 0) {
+        if (s.trim().length() == 0) {
             return false;
         }
-        if (s.length() != n) {
+        if (s.trim().length() != n) {
             return true;
         }
         return false;

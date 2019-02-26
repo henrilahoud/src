@@ -70,7 +70,7 @@ public abstract class StringUtils {
                     .replaceAll("[\\s]+"," ")
                     .trim();
         }
-        return s;
+        return s.replace(".0","");
     }
 
     public static String reformat(int s) {
@@ -84,13 +84,28 @@ public abstract class StringUtils {
         else return DEFAULTVALUE;
     }
 
+    public static String reformatTel(String tel) {
+        if (tel.length() != 11){
+            return tel;
+        }
+        StringJoiner sj = new StringJoiner(" ","+","");
+        sj.add(tel.substring(0,2));
+        sj.add(tel.substring(2,3));
+        sj.add(tel.substring(3,5));
+        sj.add(tel.substring(5,7));
+        sj.add(tel.substring(7,9));
+        sj.add(tel.substring(9,11));
+
+        return sj.toString();
+    }
+
     public static String XlsxStringValue(Cell cell) {
 
         switch (cell.getCellTypeEnum()) {
             case STRING:
                 return cell.getStringCellValue();
             case NUMERIC:
-                return String.valueOf(cell.getNumericCellValue());
+                return ((Long)(new Double(cell.getNumericCellValue()).longValue())).toString();
             case BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue());
             case BLANK:

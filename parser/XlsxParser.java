@@ -24,6 +24,10 @@ import static org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_NULL_AND_
 
 public class XlsxParser implements GenericParser <DataWrapper,File> {
     private XSSFWorkbook xlsx;
+    private XSSFSheet emplacementsSheet = null;
+    private XSSFSheet distribSheet = null;
+    private XSSFSheet inventaireSheet = null;
+    private XSSFSheet lookUpSheet = null;
 
     private Consumer<Integer> onProgressUpdateListener;
 
@@ -49,21 +53,33 @@ public class XlsxParser implements GenericParser <DataWrapper,File> {
             // Finds the workbook instance for XLSX file and fetch all the headers
             xlsx = new XSSFWorkbook(f);
 
-            if (xlsx.getNumberOfSheets() != 4) {
-                throw new IllegalStateException("Le fichier Excel n'est pas au bon format");
-            }
-
             Map<String, Integer> emplacementHeaders;
             Map<String, Integer> distribHeaders;
             Map<String, Integer> inventaireHeaders;
             Map<String, String> lookup;
 
-            XSSFSheet emplacementsSheet = xlsx.getSheetAt(0);
-            XSSFSheet distribSheet = xlsx.getSheetAt(1);
-            XSSFSheet inventaireSheet = xlsx.getSheetAt(2);
-            XSSFSheet lookUpSheet = xlsx.getSheetAt(3);
+            emplacementsSheet = xlsx.getSheetAt(0);
+            distribSheet = xlsx.getSheetAt(1);
 
-            int totalNbOfRows = emplacementsSheet.getPhysicalNumberOfRows() + distribSheet.getPhysicalNumberOfRows() + inventaireSheet.getPhysicalNumberOfRows() + lookUpSheet.getPhysicalNumberOfRows();
+            if (xlsx.getNumberOfSheets() == 3) {
+                lookUpSheet = xlsx.getSheetAt(2);
+            }
+            else if (xlsx.getNumberOfSheets() == 4) {
+                inventaireSheet = xlsx.getSheetAt(2);
+                lookUpSheet = xlsx.getSheetAt(3);
+            }
+            else throw new IllegalStateException("Le fichier Excel n'est pas au bon format");
+
+            int totalNbOfRows = 0;
+
+            if (inventaireSheet == null) {
+                totalNbOfRows = emplacementsSheet.getPhysicalNumberOfRows() + distribSheet.getPhysicalNumberOfRows() + lookUpSheet.getPhysicalNumberOfRows();
+            }
+            else {
+                totalNbOfRows = emplacementsSheet.getPhysicalNumberOfRows() + distribSheet.getPhysicalNumberOfRows() + inventaireSheet.getPhysicalNumberOfRows() + lookUpSheet.getPhysicalNumberOfRows();
+            }
+
+
             int progressCounter = 0;
 
             int nbEmplacements = 0;
@@ -72,8 +88,14 @@ public class XlsxParser implements GenericParser <DataWrapper,File> {
             // First, map headers, they will be injected into the Parsers to bind the Data with the correct attributes of Emplacement and Conteneur
             emplacementHeaders = fetchHeaders(xlsx, 0);
             distribHeaders = fetchHeaders(xlsx, 1);
-            inventaireHeaders = fetchHeaders(xlsx, 2);
-            lookup = fetchLookup(xlsx);
+            inventaireHeaders = null; //initialization of inventaireHeaders;
+
+            int lookupIndex = 2; //The lookup table is by default on the 3rd sheet (number 2)
+            if (inventaireSheet != null) { //if we have an inventaireSheet then the lookup table is located on the 4th sheet (number 3)
+                inventaireHeaders = fetchHeaders(xlsx, 2);
+                lookupIndex = 3;
+            }
+            lookup = fetchLookup(xlsx, lookupIndex);
 
 
             /* Now, fetch the Emplacement and the Conteneur :
@@ -123,27 +145,30 @@ public class XlsxParser implements GenericParser <DataWrapper,File> {
             }
 
             // Emplacements have been made, now fetch all the Conteneurs (those in the inventaire AND containing Puce numbers, third sheet)
-            for (int ri = 1; ri < inventaireSheet.getPhysicalNumberOfRows(); ri++) { //Starts at 1 to avoid taking the headers into account
-                Row row = inventaireSheet.getRow(ri);
-                ArrayList<String> rowArray = new ArrayList<>();
+            if (inventaireSheet != null) {
+                for (int ri = 1; ri < inventaireSheet.getPhysicalNumberOfRows(); ri++) { //Starts at 1 to avoid taking the headers into account
+                    Row row = inventaireSheet.getRow(ri);
+                    ArrayList<String> rowArray = new ArrayList<>();
 
-                for (int i = 0; i < inventaireHeaders.size(); i++) {
-                    if (row.getCell(i,RETURN_NULL_AND_BLANK) == null) {
-                        rowArray.add("");
-                    } else {
-                        rowArray.add(StringUtils.XlsxStringValue(row.getCell(i,RETURN_NULL_AND_BLANK)));
+                    for (int i = 0; i < inventaireHeaders.size(); i++) {
+                        if (row.getCell(i,RETURN_NULL_AND_BLANK) == null) {
+                            rowArray.add("");
+                        } else {
+                            rowArray.add(StringUtils.XlsxStringValue(row.getCell(i,RETURN_NULL_AND_BLANK)));
+                        }
                     }
-                }
 
-                ConteneurParser cp = new ConteneurParser(inventaireHeaders);
-                Conteneur c = cp.parse(rowArray);
+                    ConteneurParser cp = new ConteneurParser(inventaireHeaders);
+                    Conteneur c = cp.parse(rowArray);
 
-                if (!(c.getNumeroCuve().isEmpty() && c.getNumeroPuce().isEmpty() && c.getNumeroCab().isEmpty())) {
-                    conteneurs.put(c.getIdentifier(), c);
-                    nbConteneurs++;
+                    if (!(c.getNumeroCuve().isEmpty() && c.getNumeroPuce().isEmpty() && c.getNumeroCab().isEmpty())) {
+                        conteneurs.put(c.getIdentifier(), c);
+                        nbConteneurs++;
+                    }
+                    updateProgress(++progressCounter * 100 / totalNbOfRows);
                 }
-                updateProgress(++progressCounter * 100 / totalNbOfRows);
             }
+
 
             // Emplacements and Conteneurs have been extracted, now bind them
             for (String key : lookup.keySet()) {
@@ -176,7 +201,17 @@ public class XlsxParser implements GenericParser <DataWrapper,File> {
         XSSFSheet mySheet = xlsx.getSheetAt(sheetPosition);
 
         // Get 1st row and iterate through the titles to map Title with Column number
+
+        if (mySheet.getPhysicalNumberOfRows() == 0) {
+            return null;
+        }
+
         Row firstRow = mySheet.getRow(0);
+
+        if (firstRow.getPhysicalNumberOfCells() == 0) {
+            return null;
+        }
+
         Iterator<Cell> ci = firstRow.cellIterator();
 
         while (ci.hasNext()) {
@@ -187,15 +222,11 @@ public class XlsxParser implements GenericParser <DataWrapper,File> {
         return headers;
     }
 
-    private Map<String, String> fetchLookup(XSSFWorkbook xlsx) {
+    private Map<String, String> fetchLookup(XSSFWorkbook xlsx, int index) {
         Map<String, String> lookup = new HashMap<>();
 
-        if (xlsx.getNumberOfSheets() < 4) { // The lookup table is located on the 4th sheet
-            throw new IllegalStateException("L'indice de l'onglet recherché est hors périmètre");
-        }
-
         // Return sheet from the XLSX workbook
-        XSSFSheet mySheet = xlsx.getSheetAt(3); // The lookup table is located on the 4th sheet
+        XSSFSheet mySheet = xlsx.getSheetAt(index); // The lookup table is located on the 4th sheet
 
         Iterator<Row> i = mySheet.rowIterator();
 

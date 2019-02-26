@@ -4,12 +4,11 @@ import handler.NoDataParsedException;
 import handler.NullValueRunTimeException;
 import handler.UnsupportedFileException;
 import handler.WrongFileTypeException;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -18,6 +17,7 @@ import parser.DataWrapper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.function.Consumer;
 
 import static parser.util.StringUtils.*;
 import static ui.UiUtils.*;
@@ -43,12 +43,23 @@ public class EnqueteToPivotController {
     private RadioButton fantoirRb;
     @FXML
     private ToggleGroup fileType;
-    
+    @FXML
+    private CheckBox daxiumErrorReport;
+
+    private Consumer<Boolean> onSelectRadioListener;
+
+
+
     @FXML
     public void initialize() {
+        daxiumRb.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
+                    daxiumErrorReport.setDisable(!(new_val));
+            }
+        });
+
         loadBtn.setOnAction(event -> {
             try {
-                //TODO take radio buttons into account to determine filetype
                 boolean isDaxium = daxiumRb.isSelected();
                 boolean isFantoir = fantoirRb.isSelected();
                 boolean isBan = banRb.isSelected();
@@ -113,6 +124,14 @@ public class EnqueteToPivotController {
 
     private void enableButton() {
         loadBtn.setDisable(false);
+    }
+
+    private void enableCheckBox () {
+        daxiumErrorReport.setDisable(false);
+    }
+
+    private void disableCheckBox () {
+        daxiumErrorReport.setDisable(true);
     }
     
     private void updateProgress(Number n) {

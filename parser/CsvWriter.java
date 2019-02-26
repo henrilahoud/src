@@ -91,10 +91,10 @@ public class CsvWriter {
                 // TODO addRowToXls(row);
                 newTable.add(joinRow(row));
             }
+        } else {
+            // TODO addRowToXls(row);
+            newTable.add(joinRow(row));
         }
-
-        // TODO addRowToXls(row);
-        newTable.add(joinRow(row));
     }
 
     private void fillErrorInformation(DataWrapper w, Emplacement e, String r[]){
@@ -138,7 +138,7 @@ public class CsvWriter {
             r[ENQUETE_SIRET] = reformat(e.getUsager().getSiret(), false);
 
             //Informations Emplacement
-            // TODO r[ENQUETE_DATEEMMENAGEMENT] = reformat(e.getDateEmmenagement());
+            r[ENQUETE_DATEEMMENAGEMENT] = reformat(e.getDateEmmenagement());
             r[ENQUETE_NUMVOIEEXTENSION] = reformat(e.getAdresseEmplacement().getNumero(), false);
             r[ENQUETE_ADRESSEEMPLACEMENTTYPE] = reformat(e.getAdresseEmplacement().getType(), false);
             r[ENQUETE_ADRESSEEMPLACEMENTARTICLE] = reformat(e.getAdresseEmplacement().getArticle(), false);
@@ -156,7 +156,7 @@ public class CsvWriter {
             //Informations Facturation
             r[ENQUETE_FACTURATIONADRESSE] = reformat(e.getAdresseEmplacement().getFacturation(), false);
             r[ENQUETE_NOMCOMPLETRAISONSOCIALE] = reformat(e.getUsager().getNomOuRaisonSocialeFacturation(), true);
-            r[ENQUETE_NUMAPPETAGE] = reformat(e.getUsager().getAdresseFacturation().getNumAptOuEtage(), true);
+            r[ENQUETE_NUMAPPETAGEEMPLACEMENT] = reformat(e.getUsager().getAdresseFacturation().getNumAptOuEtage(), true);
             r[ENQUETE_ENTREEBATIMENTIMMEUBLE] = reformat(e.getUsager().getAdresseFacturation().getEntreeBatImmeuble(), true);
             r[ENQUETE_NUMEROLIBELLEVOIE] = reformat(e.getUsager().getAdresseFacturation().getNumEtLabelVoie(), true);
             r[ENQUETE_COMPLEMENTADRESSE] = reformat(e.getUsager().getAdresseFacturation().getComplementAdresse(), true);
@@ -197,6 +197,8 @@ public class CsvWriter {
             r[USAGER_IBAN] = StringUtils.DEFAULTVALUE;
             r[USAGER_TITULAIRE] = StringUtils.DEFAULTVALUE;
 
+            //TODO This is not needed, it is just a concat of some values to control more easily
+            r[PIVOTCOLUMNS_NB]= reformat(e.getAdresseEmplacement().getNumero() + e.getAdresseEmplacement().getNumAppEtage() + e.getAdresseEmplacement().getEntreeBatImmeuble(), false);
         }
         catch (Exception ex) {
             System.out.println("fillEmplInformation");
@@ -216,11 +218,10 @@ public class CsvWriter {
             r[ENQUETE_CONTENEUR_NUMCUVE] = reformat(c.getNumeroCuve(), false);
             r[ENQUETE_CONTENEUR_NUMCAB] = reformat(c.getNumeroCab(), false);
 
-            //Only for Pays de Valois
-            r[PIVOTCOLUMNS_NB]= reformatLastColumn(true);
-            if (!isValid) {
+            //TODO This was for pays de valois, can disapear
+            /*if (!isValid) {
                 r[PIVOTCOLUMNS_NB]= reformatLastColumn(c.isFilled());
-            }
+            }*/
         }
         catch (Exception ex) {
             System.out.println("fillContInformation");

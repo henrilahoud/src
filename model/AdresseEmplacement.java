@@ -8,6 +8,8 @@ public class AdresseEmplacement extends Adresse {
     private String cp;
     private String ville;
     private String residencePrincipaleSecondaire;
+    private String numAppEtage;
+    private String entreeBatImmeuble;
     private String facturation; // Facturer a l'adresse de l'emplacement ?
 
     public String getResidencePrincipaleSecondaire() {
@@ -16,6 +18,22 @@ public class AdresseEmplacement extends Adresse {
 
     public void setResidencePrincipaleSecondaire(String residencePrincipaleSecondaire) {
         this.residencePrincipaleSecondaire = residencePrincipaleSecondaire;
+    }
+
+    public String getNumAppEtage() {
+        return numAppEtage;
+    }
+
+    public void setNumAppEtage(String numAppEtage) {
+        this.numAppEtage = numAppEtage;
+    }
+
+    public String getEntreeBatImmeuble() {
+        return entreeBatImmeuble;
+    }
+
+    public void setEntreeBatImmeuble(String entreeBatImmeuble) {
+        this.entreeBatImmeuble = entreeBatImmeuble;
     }
 
     public String getFacturation() {

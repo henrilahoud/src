@@ -9,6 +9,7 @@ import java.util.Map;
 import static handler.ExceptionWrapper.*;
 import static parser.util.HeaderUtils.*;
 import static parser.util.DataChecker.*;
+import static parser.util.StringUtils.reformatTel;
 
 public class EmplacementParser implements GenericParser<Emplacement,ArrayList<String>> {
 
@@ -38,8 +39,8 @@ public class EmplacementParser implements GenericParser<Emplacement,ArrayList<St
             c1.setCivilite(row.get(columns.get(COLUMN_ENQUETE_CIVILITECONTACT1)));
             c1.setNomOuRaisonSociale(row.get(columns.get(COLUMN_ENQUETE_NOMCONTACT1)));
             c1.setPrenom(row.get(columns.get(COLUMN_ENQUETE_PRENOMCONTACT1)));
-            c1.setTelephone1(row.get(columns.get(COLUMN_ENQUETE_TELEPHONE1)));
-            c1.setTelephone2(row.get(columns.get(COLUMN_ENQUETE_TELEPHONE2)));
+            c1.setTelephone1(reformatTel(row.get(columns.get(COLUMN_ENQUETE_TELEPHONE1))));
+            c1.setTelephone2(reformatTel(row.get(columns.get(COLUMN_ENQUETE_TELEPHONE2))));
             c1.setEmail(row.get(columns.get(COLUMN_ENQUETE_ADRESSEEMAIL)));
             u.setContact1(c1);
 
@@ -63,12 +64,12 @@ public class EmplacementParser implements GenericParser<Emplacement,ArrayList<St
             carte.setMotifDistribution(row.get(columns.get(COLUMN_ENQUETE_MOTIFDISTRIBUTIONCARTE)));
             u.setCarte(carte);
 
-            u.setNomOuRaisonSocialeFacturation(row.get(columns.get(COLUMN_ENQUETE_NOMCOMPLETRAISONSOCIALE))) ;
+            u.setNomOuRaisonSocialeFacturation(row.get(columns.get(COLUMN_ENQUETE_NOMCOMPLETRAISONSOCIALEFACTURATION))) ;
             AdresseGenerique f = new AdresseGenerique();
-            f.setNumAptOuEtage(row.get(columns.get(COLUMN_ENQUETE_NUMAPPETAGE)));
-            f.setEntreeBatImmeuble(row.get(columns.get(COLUMN_ENQUETE_ENTREEBATIMENTIMMEUBLE)));
-            f.setNumEtLabelVoie(row.get(columns.get(COLUMN_ENQUETE_NUMEROLIBELLEVOIE)));
-            f.setComplementAdresse(row.get(columns.get(COLUMN_ENQUETE_COMPLEMENTADRESSE)));
+            f.setNumAptOuEtage(row.get(columns.get(COLUMN_ENQUETE_NUMAPPETAGEFACTURATION)));
+            f.setEntreeBatImmeuble(row.get(columns.get(COLUMN_ENQUETE_ENTREEBATIMENTIMMEUBLEFACTURATION)));
+            f.setNumEtLabelVoie(row.get(columns.get(COLUMN_ENQUETE_NUMEROLIBELLEVOIFACTURATION)));
+            f.setComplementAdresse(row.get(columns.get(COLUMN_ENQUETE_COMPLEMENTADRESSEFACTURATION)));
             f.setCp(row.get(columns.get(COLUMN_ENQUETE_CPFRANCEFACTURATION)) + row.get(columns.get(COLUMN_ENQUETE_CPHORSFRANCEFACTURATION))); // only one of the 2 will be filled
             f.setVille(row.get(columns.get(COLUMN_ENQUETE_VILLEFRANCEFACTURATION)) + row.get(columns.get(COLUMN_ENQUETE_VILLEHORSFRANCEFACTURATION))); // only one of the 2 will be filled
             f.setPays(row.get(columns.get(COLUMN_ENQUETE_PAYSHORSFRANCEFACTURATION)));
@@ -91,7 +92,7 @@ public class EmplacementParser implements GenericParser<Emplacement,ArrayList<St
             emp.setDateEmmenagement(new DateParser().parse(row.get(columns.get(COLUMN_ENQUETE_DATEEMMENAGEMENT))));
 
             AdresseEmplacement adresse = new AdresseEmplacement();
-            adresse.setNumero(row.get(columns.get(COLUMN_ENQUETE_NUMVOIEEXTENSION)));
+            adresse.setNumero(row.get(columns.get(COLUMN_ENQUETE_NUMVOIE))+ " " + row.get(columns.get(COLUMN_ENQUETE_EXTENSION)));
             adresse.setType(row.get(columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENTTYPE)));
             adresse.setArticle(row.get(columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENTARTICLE)));
             adresse.setNom(row.get(columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENTNOM)));
@@ -99,6 +100,8 @@ public class EmplacementParser implements GenericParser<Emplacement,ArrayList<St
             adresse.setVille(row.get(columns.get(COLUMN_ENQUETE_ADRESSEEMPLACEMENTVILLE)));
             adresse.setResidencePrincipaleSecondaire(row.get(columns.get(COLUMN_ENQUETE_RESIDENCEPRINCIPALESECONDAIRE)));
             adresse.setFacturation(row.get(columns.get(COLUMN_ENQUETE_FACTURATIONAUTREADRESSE))); //TODO inverser fonctionnement // Facturer a l'adresse de l'emplacement ?
+            adresse.setNumAppEtage(row.get(columns.get(COLUMN_ENQUETE_NUMAPPETAGEEMPLACEMENT)));
+            adresse.setEntreeBatImmeuble(row.get(columns.get(COLUMN_ENQUETE_ENTREEBATIMENTIMMEUBLEEMPLACEMENT))) ;
             emp.setAdresseEmplacement(adresse);
 
             emp.setUsager(u);
@@ -111,8 +114,8 @@ public class EmplacementParser implements GenericParser<Emplacement,ArrayList<St
             cp.setCivilite(row.get(columns.get(COLUMN_ENQUETE_CIVILITEPOUB)));
             cp.setNomOuRaisonSociale(row.get(columns.get(COLUMN_ENQUETE_NOMRAISONSOCIALEPOUB)));
             cp.setPrenom(row.get(columns.get(COLUMN_ENQUETE_PRENOMPOUB)));
-            cp.setTelephone1(row.get(columns.get(COLUMN_ENQUETE_TELEPHONE1POUB)));
-            cp.setTelephone2(row.get(columns.get(COLUMN_ENQUETE_TELEPHONE2POUB)));
+            cp.setTelephone1(reformatTel(row.get(columns.get(COLUMN_ENQUETE_TELEPHONE1POUB))));
+            cp.setTelephone2(reformatTel(row.get(columns.get(COLUMN_ENQUETE_TELEPHONE2POUB))));
             cp.setEmail(row.get(columns.get(COLUMN_ENQUETE_ADRESSEEMAILPOUB)));
             p.setContact(cp);
 

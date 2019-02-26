@@ -15,7 +15,7 @@ public abstract class HeaderUtils {
 
     // First 2 rows of output
     public static final String MAINTITLES = "Renseignements de l'usager occupant;;;;;;;;;;;;;;;;;Renseignements de l'emplacement;;;;;;;;Conteneur;;;;;;;;Cartes;;;;Adresse de facturation;;;;;;;;;;;Renseignements du Propriétaire ou Bailleur;;;;;;;;;;;;;;;Informations TEOMi;;;;Informations SEPA;;;;;;Erreurs;;;;;;\n";
-    public static final String SUBTITLES = "Code usager;Code reprise;Activité professionnelle;Civilité Contact 1;Nom Contact 1;Prénom Contact 1;Civilité Contact 2;Nom Contact 2;Prénom Contact 2;Raison sociale;Téléphone 1;Téléphone 2;Adresse email;Nombre Habitants;Propriétaire / Locataire;Commentaires;N° SIRET;Date d'emménagement;N° de voie + Extension;Type de Voie;Article de la voie;Nom de la voie;CP Ville;Ville;Résidence Principale ou Secondaire;Date de distribution du bac;Flux / Matière;Volume bac (L);Serrure;Fournisseur;N° de puce;N° de cuve;N° de CAB;Type;N° carte;Date d'attribution de la carte;Motif de distribution;Facturer à l'adresse de l'emplacement;Nom complet / Raison sociale;N° App / Etage;Entrée / Bâtiment / Immeuble;Numéro + Libellé de la voie;Complément adresse;CP Ville;Ville;Pays;Catégorie du tiers;Nature juridique du tiers;Code propriétaire;Statut propriétaire ou bailleur ?;Civilité;Nom ou Raison sociale;Prénom;N° App / Etage;Entrée / Bâtiment / Immeuble;Numéro + Libellé de la voie;Complément adresse;CP Ville;Ville;Pays;Téléphone;Téléphone 2;Adresse email;Numéro invariant fiscal;Année de construction du logement;Code Rivoli;Numéro de parcelle;Mode de règlement;Date de création;RUM;Date de mandat;IBAN;Titulaire du compte;Pays de Vallois : Double saisie;Information obligatoire manquante (orange);Information obligatoire manquante (vert);Format numéro de téléphone;Format email;Format SIRET;Format code postal;Nombre d'habitants élevé\n";
+    public static final String SUBTITLES = "Code usager;Code reprise;Activité professionnelle;Civilité Contact 1;Nom Contact 1;Prénom Contact 1;Civilité Contact 2;Nom Contact 2;Prénom Contact 2;Raison sociale;Téléphone 1;Téléphone 2;Adresse email;Nombre Habitants;Propriétaire / Locataire;Commentaires;N° SIRET;Date d'emménagement;N° de voie + Extension;Type de Voie;Article de la voie;Nom de la voie;CP Ville;Ville;Résidence Principale ou Secondaire;Date de distribution du bac;Flux / Matière;Volume bac (L);Serrure;Fournisseur;N° de puce;N° de cuve;N° de CAB;Type;N° carte;Date d'attribution de la carte;Motif de distribution;Facturer à l'adresse de l'emplacement;Nom complet / Raison sociale;N° App / Etage;Entrée / Bâtiment / Immeuble;Numéro + Libellé de la voie;Complément adresse;CP Ville;Ville;Pays;Catégorie du tiers;Nature juridique du tiers;Code propriétaire;Statut propriétaire ou bailleur ?;Civilité;Nom ou Raison sociale;Prénom;N° App / Etage;Entrée / Bâtiment / Immeuble;Numéro + Libellé de la voie;Complément adresse;CP Ville;Ville;Pays;Téléphone;Téléphone 2;Adresse email;Numéro invariant fiscal;Année de construction du logement;Code Rivoli;Numéro de parcelle;Mode de règlement;Date de création;RUM;Date de mandat;IBAN;Titulaire du compte;Concat Ext / Etage / Entree Imm.;Information obligatoire manquante (orange);Information obligatoire manquante (vert);Format numéro de téléphone;Format email;Format SIRET;Format code postal;Nombre d'habitants élevé\n";
 
 
     // Colonne generee
@@ -76,7 +76,8 @@ public abstract class HeaderUtils {
     public static final String COLUMN_ENQUETE_TELEPHONE2POUB = "Telephone2PouB";
     public static final String COLUMN_ENQUETE_ADRESSEEMAILPOUB = "AdresseEmailPouB";
     public static final String COLUMN_ENQUETE_DATEEMMENAGEMENT = "DateEmmenagement";
-    public static final String COLUMN_ENQUETE_NUMVOIEEXTENSION = "NumVoieExtension";
+    public static final String COLUMN_ENQUETE_NUMVOIE = "NumVoie";
+    public static final String COLUMN_ENQUETE_EXTENSION = "ExtensionVoieEmplacement";
     public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTVILLE = "listItemVilleEmplacement";
     public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTCP = "listItemCodePostalEmplacement";
     public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTTYPE = "listItemTypeVoieEmplacement";
@@ -84,18 +85,20 @@ public abstract class HeaderUtils {
     public static final String COLUMN_ENQUETE_ADRESSEEMPLACEMENTNOM = "listItemNomVoieEmplacement";
     public static final String COLUMN_ENQUETE_RESIDENCEPRINCIPALESECONDAIRE = "ResidencePrincipaleSecondaire";
     public static final String COLUMN_ENQUETE_FACTURATIONAUTREADRESSE = "FacturationAutreAdresse";
-    public static final String COLUMN_ENQUETE_NOMCOMPLETRAISONSOCIALE = "NomCompletRaisonSociale";
-    public static final String COLUMN_ENQUETE_NUMAPPETAGE = "NumAppEtage";
-    public static final String COLUMN_ENQUETE_ENTREEBATIMENTIMMEUBLE = "EntreeBatimentImmeuble";
-    public static final String COLUMN_ENQUETE_NUMEROLIBELLEVOIE = "NumeroLibelleVoie";
-    public static final String COLUMN_ENQUETE_COMPLEMENTADRESSE = "ComplementAdresse";
-    //public static final String COLUMN_ENQUETE_FRANCEFACTURATION = "Enquête de Dotation:FranceFacturation";
+    public static final String COLUMN_ENQUETE_NOMCOMPLETRAISONSOCIALEFACTURATION = "NomCompletRaisonSociale";
+    public static final String COLUMN_ENQUETE_NUMAPPETAGEEMPLACEMENT = "NumAppEtageEmplacement";
+    public static final String COLUMN_ENQUETE_ENTREEBATIMENTIMMEUBLEEMPLACEMENT = "EntreeBatimentImmeubleEmplacement";
+    public static final String COLUMN_ENQUETE_NUMEROLIBELLEVOIFACTURATION = "NumeroLibelleVoie";
+    public static final String COLUMN_ENQUETE_COMPLEMENTADRESSEFACTURATION = "ComplementAdresse";
+    public static final String COLUMN_ENQUETE_FRANCEFACTURATION = "FranceFacturation";
     public static final String COLUMN_ENQUETE_CPFRANCEFACTURATION = "listItemCodePostalFacturation";
     public static final String COLUMN_ENQUETE_VILLEFRANCEFACTURATION = "listItemVilleFacturation";
     public static final String COLUMN_ENQUETE_CPHORSFRANCEFACTURATION = "CPHorsFranceFacturation";
     public static final String COLUMN_ENQUETE_VILLEHORSFRANCEFACTURATION = "VilleHorsFranceFacturation";
     public static final String COLUMN_ENQUETE_PAYSHORSFRANCEFACTURATION = "PaysHorsFranceFacturation";
+    public static final String COLUMN_ENQUETE_NUMAPPETAGEFACTURATION = "NumAppEtageFacturation";
     //public static final String COLUMN_ENQUETE_ATTRIBUTIONCARTE = "Enquête de Dotation:AttributionCarte";
+    public static final String COLUMN_ENQUETE_ENTREEBATIMENTIMMEUBLEFACTURATION = "EntreeBatimentImmeubleFacturation";
     public static final String COLUMN_ENQUETE_TYPECARTE = "Type";
     public static final String COLUMN_ENQUETE_NUMCARTE = "NumCarte";
     public static final String COLUMN_ENQUETE_DATEATTRIBUTIONCARTE = "DateAttributionCarte";
@@ -166,7 +169,7 @@ public abstract class HeaderUtils {
     public static final int ENQUETE_RESIDENCEPRINCIPALESECONDAIRE = 24;
     public static final int ENQUETE_FACTURATIONADRESSE = 37;
     public static final int ENQUETE_NOMCOMPLETRAISONSOCIALE = 38;
-    public static final int ENQUETE_NUMAPPETAGE = 39;
+    public static final int ENQUETE_NUMAPPETAGEEMPLACEMENT = 39;
     public static final int ENQUETE_ENTREEBATIMENTIMMEUBLE = 40;
     public static final int ENQUETE_NUMEROLIBELLEVOIE = 41;
     public static final int ENQUETE_COMPLEMENTADRESSE = 42;

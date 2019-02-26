@@ -13,6 +13,8 @@
 
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.CheckBox?>
 <GridPane fx:id="gridPane" alignment="center" prefHeight="358.0" prefWidth="300.0" style="-fx-background-color: white" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.EnqueteToPivotController">
     <padding><Insets bottom="15" top="25" /></padding>
     <VBox alignment="TOP_CENTER" prefHeight="200" prefWidth="275.0" spacing="20" GridPane.rowIndex="0">
@@ -24,7 +26,10 @@
         <fx:define>
             <ToggleGroup fx:id="fileTypeSelection"/>
         </fx:define>
-        <RadioButton fx:id="daxiumRb" text="Fichier Daxium" toggleGroup="$fileTypeSelection" alignment="CENTER_LEFT"/>
+        <HBox>
+            <RadioButton fx:id="daxiumRb" text="Fichier Daxium" toggleGroup="$fileTypeSelection" alignment="CENTER_LEFT" selected="true"/>
+            <CheckBox fx:id="daxiumErrorReport" text="Rapport d'erreur" alignment="CENTER_RIGHT"/>
+        </HBox>
         <RadioButton fx:id="banRb" text="Fichier BAN" toggleGroup="$fileTypeSelection" />
         <RadioButton fx:id="fantoirRb" text="Fichier FANTOIR" toggleGroup="$fileTypeSelection" />
     </VBox>
