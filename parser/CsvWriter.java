@@ -198,7 +198,7 @@ public class CsvWriter {
             r[USAGER_TITULAIRE] = StringUtils.DEFAULTVALUE;
 
             //TODO This is not needed, it is just a concat of some values to control more easily
-            r[PIVOTCOLUMNS_NB]= reformat(e.getAdresseEmplacement().getNumero() + " / " + e.getAdresseEmplacement().getNumAppEtage() + " / " + e.getAdresseEmplacement().getEntreeBatImmeuble(), false);
+            r[PIVOTCOLUMNS_NB]= reformat(e.getAdresseEmplacement().getNumAppEtage() + " / " + e.getAdresseEmplacement().getEntreeBatImmeuble(), false);
         }
         catch (Exception ex) {
             System.out.println("fillEmplInformation");
